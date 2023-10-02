@@ -4,7 +4,7 @@ const PostsController = require("../controllers/PostsController");
 
 const router = express.Router();
 
-router.get("/:limit/:skip", PostsController.getAll);
+router.get("/limit/:limit/skip/:skip", PostsController.getAll);
 router.get("/:postId", PostsController.getOneById);
 router.get("/user/:userId", PostsController.getAllByUserId);
 router.get("/user/:userId/saved", PostsController.getSavedByUserId);
