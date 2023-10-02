@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema(
     {
-        user_id: {
+        user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
@@ -11,14 +11,15 @@ const PostSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        image: String,
         likes_list: [
             {
-                user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+                user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
             }
         ],
         saves_list: [
             {
-                user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+                user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
             }
         ]
     },
