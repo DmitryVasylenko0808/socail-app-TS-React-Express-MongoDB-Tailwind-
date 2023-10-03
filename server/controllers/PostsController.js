@@ -9,7 +9,7 @@ class PostsController {
                 .sort({ createdAt: -1 })
                 .skip(req.params.limit * req.params.skip)
                 .limit(req.params.limit)
-                .populate("user", "login name avatar_file");
+                .populate("user", "login name avatar_file black_list");
 
             posts = posts.sort((a, b) => b.likes_list.length - a.likes_list.length);
 
@@ -22,8 +22,11 @@ class PostsController {
 
     static async getOneById(req, res) {
         try {
-            const post = await PostModel.findById(req.params.postId)
-                .populate("user", "name login avatar_file");
+            const post = await PostModel.findOne(
+                { 
+                    user: req.params.userId, 
+                    _id: req.params.postId 
+                }).populate("user", "name login avatar_file");
             
             if (!post) {
                 return res.status(404).json({ success: false, message: "Post is not found" });
@@ -53,9 +56,9 @@ class PostsController {
         }
     }
 
-    static async getSavedByUserId(req, res) {
+    static async getSaved(req, res) {
         try {
-            const user = await UserModel.findById(req.params.userId)
+            const user = await UserModel.findById(req.userId)
                 .populate({
                     path: "saved_posts.post",
                     populate: {

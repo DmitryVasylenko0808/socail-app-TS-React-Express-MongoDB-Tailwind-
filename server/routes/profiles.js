@@ -3,12 +3,14 @@ const ProfilesController = require("../controllers/ProfilesController");
 const { editUserValidation } = require("../validations/userValidations");
 const handleValidationErrors = require("../utils/handleValidationErrors");
 const isAuthorized = require("../middlewares/isAuthorized");
+const isInBlackList = require("../middlewares/isInBlackList");
+const isPrivateUser = require("../middlewares/isPrivateUser");
 
 const router = express.Router();
 
-router.get("/:login", ProfilesController.get);
-router.get("/:login/followers", isAuthorized, ProfilesController.getFollowers);
-router.get("/:login/followings", isAuthorized, ProfilesController.getFollowings);
+router.get("/:userId", isInBlackList, ProfilesController.get);
+router.get("/:userId/followers", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowers);
+router.get("/:userId/followings", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowings);
 router.post("/follow", isAuthorized, ProfilesController.follow);
 router.patch("/edit", isAuthorized, editUserValidation, handleValidationErrors, ProfilesController.edit);
 router.patch("/toggle_private", isAuthorized, ProfilesController.togglePrivate);
