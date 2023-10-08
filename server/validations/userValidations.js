@@ -25,10 +25,11 @@ const signUpValidation = [
     body("name", "Name is required").trim().notEmpty(),
     body("name", "Name must have more than 1 characters").trim().isLength({ min: 2 }),
     body("avatar_file").custom((value, { req }) => {
-        if (req.files !== null && req.files.avatar_file !== null) {
+        if (req.files && req.files.avatar_file) {
             const avatar_file = req.files.avatar_file;
 
-            if (avatar_file.mimetype === "image/jpeg" || avatar_file.mimetype === "image/bmp" || avatar_file.mimetype === "image/png") {
+            if (avatar_file.mimetype === "image/jpeg" || avatar_file.mimetype === "image/jpg" 
+                || avatar_file.mimetype === "image/bmp" || avatar_file.mimetype === "image/png") {
                 return true;
             } else {
                 throw new Error("Invalid format of file. Choose .jpeg, .bmp or .png format");

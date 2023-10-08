@@ -11,7 +11,7 @@ class AuthController {
             const hash = await bcrypt.hash(password, 5);
 
             let UAvatarFileName = null;
-            if (req.files !== null && req.files.avatar_file !== null) {
+            if (req.files && req.files.avatar_file) {
                 UAvatarFileName = await moveFile(req.files.avatar_file, "../server/public/avatars");
             }
 
@@ -32,7 +32,7 @@ class AuthController {
             });
             await doc.save();
 
-            return res.status(201).json({ succes: true });
+            return res.status(201).json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -42,8 +42,6 @@ class AuthController {
     static async signIn(req, res) {
         try {
             const { login } = req.body;
-
-            console.log(req.userId, req.userLogin);
 
             const token = jwt.sign(
                 {
@@ -56,7 +54,7 @@ class AuthController {
                 }
             );
 
-            res.json({ succes: true, login, token });
+            res.json({ login, token });
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

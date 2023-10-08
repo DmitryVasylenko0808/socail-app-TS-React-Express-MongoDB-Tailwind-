@@ -8,7 +8,7 @@ const handleValidationErrors = (req, res, next) => {
             return { path: err.path, message: err.msg };
         });
         const error = errorsData[0];
-        return res.status(400).json({ error });
+        return res.status(400).json(error);
     }
 
     next();

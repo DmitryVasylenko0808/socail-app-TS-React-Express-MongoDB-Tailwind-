@@ -8,9 +8,9 @@ const isPrivateUser = require("../middlewares/isPrivateUser");
 
 const router = express.Router();
 
-router.get("/:userId", isInBlackList, ProfilesController.get);
-router.get("/:userId/followers", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowers);
-router.get("/:userId/followings", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowings);
+router.get("/:login", isInBlackList, ProfilesController.get);
+router.get("/:login/followers", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowers);
+router.get("/:login/followings", isAuthorized, isInBlackList, isPrivateUser, ProfilesController.getFollowings);
 router.post("/follow", isAuthorized, ProfilesController.follow);
 router.patch("/edit", isAuthorized, editUserValidation, handleValidationErrors, ProfilesController.edit);
 router.patch("/toggle_private", isAuthorized, ProfilesController.togglePrivate);

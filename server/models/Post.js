@@ -12,6 +12,10 @@ const PostSchema = new mongoose.Schema(
             required: true
         },
         image: String,
+        comments_count: {
+            type: Number,
+            default: 0
+        },
         likes_list: [
             {
                 user: { type: mongoose.Schema.Types.ObjectId, ref: "User" }

@@ -38,6 +38,13 @@ class CommentsController {
             });
             await doc.save();
 
+            await PostModel.findByIdAndUpdate(
+                req.body.postId, 
+                { 
+                    $inc: { comments_count: 1 } 
+                }
+            );
+
             res.json({ success: true });
         } catch (err) {
             console.log(err);
@@ -58,6 +65,13 @@ class CommentsController {
             }
 
             await CommentModel.deleteOne({ _id: req.params.commentId});
+
+            await PostModel.findByIdAndUpdate(
+                req.body.postId, 
+                { 
+                    $inc: { comments_count: -1 } 
+                }
+            );
 
             res.json({ success: true });
         } catch (err) {

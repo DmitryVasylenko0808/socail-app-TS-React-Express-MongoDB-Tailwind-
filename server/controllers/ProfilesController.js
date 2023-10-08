@@ -4,7 +4,7 @@ const moveFile = require("../utils/moveFile");
 class ProfilesController {
     static async get(req, res) {
         try {
-            const user = await UserModel.findById(req.params.userId);
+            const user = await UserModel.findOne({ login: req.params.login });
             if (!user) {
                 return res.status(404).json({ succes: false, message: "User is not found" });
             }
@@ -80,7 +80,7 @@ class ProfilesController {
 
     static async getFollowers(req, res) {
         try {
-            const user = await UserModel.findById(req.params.userId)
+            const user = await UserModel.findOne({ login: req.params.login })
                 .populate("followers.user", "login name avatar_file");
 
             const { followers } = user._doc;
@@ -94,7 +94,7 @@ class ProfilesController {
 
     static async getFollowings(req, res) {
         try {
-            const user = await UserModel.findById(req.params.userId)
+            const user = await UserModel.findOne({ login: req.params.login })
                 .populate("followings.user", "login name avatar_file");
 
             const { followings } = user._doc;
