@@ -9,11 +9,11 @@ class ProfilesController {
                 return res.status(404).json({ succes: false, message: "User is not found" });
             }
 
-            const countFollowers = user.followers.length;
-            const countFollowings = user.followings.length;
-            const { password_hash, saved_posts, followers, followings, black_list, ...userData } = user._doc;
+            let { password_hash, saved_posts, followers, followings, ...userData } = user._doc;
+            followers = followers.map(f => f.user);
+            followings = followings.map(f => f.user);
 
-            res.json({ ...userData, countFollowers, countFollowings });
+            res.json({ ...userData, followers, followings });
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -83,9 +83,10 @@ class ProfilesController {
             const user = await UserModel.findOne({ login: req.params.login })
                 .populate("followers.user", "login name avatar_file");
 
-            const { followers } = user._doc;
+            let { followers } = user._doc;
+            followers = followers.map(f => ({ ...f.user._doc }));
 
-            res.json({ followers });
+            res.json(followers);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -97,9 +98,10 @@ class ProfilesController {
             const user = await UserModel.findOne({ login: req.params.login })
                 .populate("followings.user", "login name avatar_file");
 
-            const { followings } = user._doc;
+            let { followings } = user._doc;
+            followings = followings.map(f => ({ ...f.user._doc }));
 
-            res.json({ followings });
+            res.json(followings);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -157,7 +159,7 @@ class ProfilesController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true)
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -186,7 +188,7 @@ class ProfilesController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

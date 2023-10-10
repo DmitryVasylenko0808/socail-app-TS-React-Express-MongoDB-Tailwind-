@@ -54,7 +54,16 @@ class AuthController {
                 }
             );
 
-            res.json({ login, token });
+            res.json({ id: req.userId, login, token });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Server error" });
+        }
+    }
+
+    static async getMe(req, res) {
+        try {
+            res.json({ id: req.userId, login: req.userLogin });
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

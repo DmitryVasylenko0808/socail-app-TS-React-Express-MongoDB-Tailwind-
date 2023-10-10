@@ -9,7 +9,8 @@ export const postsApi = emptySplitApi.injectEndpoints({
         }),
         getAllPostsByUserId: builder.query<Post[], string | undefined>({
             query: (id) => `posts/user/${id}`
-        })
+        }),
+        
     })
 });
 

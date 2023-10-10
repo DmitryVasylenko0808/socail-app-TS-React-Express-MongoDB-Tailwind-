@@ -4,15 +4,17 @@ const UserModel = require("../models/User");
 
 const isInBlackList = async (req, res, next) => {
     if (req.headers && req.headers.authorization) {
+        console.log(true);
         const token = req.headers.authorization.split(" ")[1];
+        console.log(token, typeof token);
 
-        if (token) {
+        if (token && token !== "null") {
             try {
                 const decoded = jwt.verify(token, config.SECRET_KEY);
 
                 const user = await UserModel.findOne(
                     {  
-                        _id: req.params.userId,
+                        login: req.params.login,
                         black_list: {
                             $elemMatch: { user: decoded.userId }
                         }

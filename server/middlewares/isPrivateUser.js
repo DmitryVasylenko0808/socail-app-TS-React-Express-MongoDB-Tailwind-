@@ -21,9 +21,9 @@ const isFollower = (req, privateUser) => {
 
 const isPrivateUser = async (req, res, next) => {
     try {
-        const user = await UserModel.findById(req.params.userId);
+        const user = await UserModel.findOne({ login: req.params.login});
 
-        if (user.is_private && isFollower(req, user)) {
+        if (!user.is_private || isFollower(req, user)) {
             next();
         } else {
             return res.status(403).json({ success: false, message: "Access denied" });

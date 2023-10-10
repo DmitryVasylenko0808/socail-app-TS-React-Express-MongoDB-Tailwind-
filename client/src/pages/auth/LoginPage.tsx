@@ -13,15 +13,8 @@ type LoginFormFields = {
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [signIn, { data: result, isLoading, isError, error }] = useSignInUserMutation();
+  const [signIn, { data: result, isLoading, isSuccess, isError, error }] = useSignInUserMutation();
   const [errorMessage, setErrorMessage] = useState<string>("");
-
-  useEffect(() => {
-    if (result) {
-      dispatch(setUserInfo(result));
-      navigate("/");
-    }
-  }, [result])
 
   const onSignInHandle = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -33,6 +26,10 @@ const LoginPage = () => {
     };
 
     await signIn(data).unwrap()
+      .then(data => {
+        dispatch(setUserInfo(data));
+        navigate("/");
+      })
       .catch(err => { setErrorMessage(err.data.message) });
   }
 

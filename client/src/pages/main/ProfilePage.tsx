@@ -1,8 +1,8 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import PostsList from '../../components/PostsList';
 import { useGetAllPostsByUserIdQuery } from '../../redux/slices/postsApi';
-import { useGetProfileQuery } from '../../redux/slices/profilesApi';
+import { useFollowUserMutation, useGetProfileQuery, useUnfollowUserMutation } from '../../redux/slices/profilesApi';
 import ProfileInfoBlock from '../../components/ProfileInfoBlock';
 import { useAppSelector } from '../../redux/hooks';
 import PostForm from '../../components/PostForm';
@@ -11,20 +11,43 @@ const ProfilePage = () => {
   const { login } = useParams();
   const user = useAppSelector(state => state.auth);
 
-  const profile = useGetProfileQuery(login);
-  const posts = useGetAllPostsByUserIdQuery(profile.data?._id, { skip: !profile.isSuccess });
+  const {data: profile, isSuccess: isProfileSuccess} = useGetProfileQuery(login);
+  const posts = useGetAllPostsByUserIdQuery(profile?._id, { skip: !isProfileSuccess });
+  const [followUser, { isSuccess: isFollowSuccess, isError: isFollowError }] = useFollowUserMutation();
+  const [unfollowUser, { isSuccess: isUnfollowSuccess, isError: isUnfollowError }] = useUnfollowUserMutation();
+
+  const followHandle = async () => {
+    if (isProfileSuccess) {
+      const data = { userId: profile._id };
+      await followUser(data).unwrap()
+        .catch(err => { console.log(err) });
+    }
+  }
+
+  const unfollowHandle = async () => {
+    if (isProfileSuccess) {
+      await unfollowUser(profile._id).unwrap()
+        .catch(err => console.log(err));
+    }
+  }
 
   return (
     <div>
-      {profile.isSuccess && posts.isSuccess &&
+      {isProfileSuccess && posts.isSuccess &&
         <ProfileInfoBlock
-          {...profile.data}
+          {...profile}
           postsCount={posts.data?.length}
-          isAuthorizedProfile={user.login === profile.data.login}
+          isOwnProfile={user.login === profile.login}
+          isFollower={!!user.token && profile.followings.includes(user.id)}
+          isFollowing={!!user.token && profile.followers.includes(user.id)}
+          onFollow={followHandle}
+          onUnfollow={unfollowHandle}
         />
       }
-      {profile.isSuccess && user.login === profile.data?.login && <PostForm />}
-      {posts.isLoading ? <div>Loading...</div> : <PostsList posts={posts.data} />}
+      {isProfileSuccess && user.login === profile.login && <PostForm />}
+      {posts.isLoading 
+        ? <div>Loading...</div> 
+        : <PostsList posts={posts.data} />}
     </div>
   );
 }

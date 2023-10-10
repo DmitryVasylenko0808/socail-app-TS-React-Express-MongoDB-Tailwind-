@@ -3,6 +3,7 @@ import { User } from "../../types";
 import { emptySplitApi } from "./emptySplitApi";
 
 type AuthResponse = {
+    id: string,
     login: string, 
     token: string
 };
@@ -24,6 +25,9 @@ type RegisterRequest = {
 
 export const authApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
+        getAuthorizedUser: builder.query<{ id: string, login: string }, null | undefined>({
+            query: () => "/auth/me"
+        }),
         signInUser: builder.mutation<AuthResponse, LoginRequest>({
             query: (body) => ({ 
                 url: "/auth/signin",
@@ -42,4 +46,8 @@ export const authApi = emptySplitApi.injectEndpoints({
     })
 });
 
-export const { useSignInUserMutation, useSignUpUserMutation } = authApi;
+export const { 
+    useGetAuthorizedUserQuery, 
+    useSignInUserMutation, 
+    useSignUpUserMutation 
+} = authApi;

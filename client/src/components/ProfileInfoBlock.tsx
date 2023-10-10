@@ -5,10 +5,14 @@ import { MdLocationPin, MdEdit } from "react-icons/md";
 
 type ProfileInfoBlockProps = User & {
     postsCount: number,
-    isAuthorizedProfile: boolean
+    isOwnProfile: boolean,
+    isFollower: boolean,
+    isFollowing: boolean,
+    onFollow?: () => void,
+    onUnfollow?: () => void
 }
 
-const ProfileInfoBlock = ({ avatar_file, name, login, about, location, countFollowers, countFollowings, postsCount, isAuthorizedProfile }: ProfileInfoBlockProps) => {
+const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers, followings, postsCount, isOwnProfile, isFollower, isFollowing, onFollow, onUnfollow }: ProfileInfoBlockProps) => {
     const path = "http://localhost:5000/static/avatars";
 
     let imageSrc;
@@ -16,6 +20,42 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, countFoll
         imageSrc = `${window.location.origin}/nullavatar.jpg`;
     } else {
         imageSrc = `${path}/${avatar_file}`;
+    }
+
+    const editProfileButton =
+        <Link
+            to={"/"}
+            className="w-[200px] h-[48px] inline-flex justify-center items-center gap-x-3 border border-stripe-500 rounded-full 
+            font-bold text-stripe-500 hover:bg-stripe-100"
+        >
+            <MdEdit size={24} />
+            Edit Profile
+        </Link>
+
+    const followButton =
+        <button
+            onClick={onFollow}
+            className="w-[200px] h-[48px] bg-stripe-400 rounded-full font-bold text-white hover:bg-stripe-500"
+        >
+            Follow
+        </button>
+
+    const unfollowButton =
+        <button
+            onClick={onUnfollow}
+            className="w-[200px] h-[48px] bg-stripe-400 rounded-full font-bold text-black hover:bg-stripe-500"
+        >
+            Unfollow
+        </button>
+    
+    const setButton = () => {
+        if (isOwnProfile) {
+            return editProfileButton;
+        } else if (isFollowing) {
+            return unfollowButton;
+        } else {
+            return followButton;
+        }
     }
 
     return (
@@ -27,21 +67,7 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, countFoll
                     className="w-[160px] h-[160px] rounded-full"
                 />
                 <div className="flex gap-x-3">
-                    {isAuthorizedProfile 
-                        ? <Link
-                            to={"/"} 
-                            className="w-[200px] h-[48px] inline-flex justify-center items-center gap-x-3 border border-stripe-500 rounded-full 
-                            font-bold text-stripe-500 hover:bg-stripe-100"
-                          >
-                            <MdEdit size={24} />
-                            Edit Profile
-                          </Link>
-                        : <button 
-                            className="w-[200px] h-[48px] bg-stripe-400 rounded-full font-bold text-white hover:bg-stripe-500"
-                          >
-                            Follow
-                          </button>
-                    }
+                    {setButton()}
                 </div>
             </div>
 
@@ -61,11 +87,11 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, countFoll
                     <div className="">
                         <span className="font-bold">{postsCount}</span> Posts
                     </div>
-                    <Link to={"/1/followers"} className="">
-                        <span className="font-bold">{countFollowers}</span> Followers
+                    <Link to={`/followers/${login}`} className="">
+                        <span className="font-bold">{followers.length}</span> Followers
                     </Link>
-                    <Link to={"/1/followings"} className="">
-                        <span className="font-bold">{countFollowings}</span> Followings
+                    <Link to={`/followings/${login}`} className="">
+                        <span className="font-bold">{followings.length}</span> Followings
                     </Link>
                 </div>
             </div>

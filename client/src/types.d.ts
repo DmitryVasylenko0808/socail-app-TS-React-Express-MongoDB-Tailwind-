@@ -10,11 +10,11 @@ export type User = {
     about: string,
     avatar_file: string,
     saved_posts: Post[],
-    followers: User[],
-    following: User[],
+    followers: string[],
+    followings: string[],
     black_list: User[],
     countFollowers?: number,
-    countFollowings: number
+    countFollowings?: number
 };
 
 export type Post = {

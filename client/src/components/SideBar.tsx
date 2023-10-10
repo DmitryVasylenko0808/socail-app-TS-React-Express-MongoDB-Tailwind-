@@ -7,9 +7,20 @@ import {
     MdLogout,
     MdLogin
 } from "react-icons/md";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { logout } from "../redux/authSlice";
 
 const SideBar = () => {
+    const user = useAppSelector(state => state.auth);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    
+    const logOutHandle = () => {
+        dispatch(logout());
+        navigate("/auth/signin");
+    }
+    
     return (
         <aside className="h-full fixed top-0 flex-none w-[270px] px-5 border-r">
             <h1 className="font-bold text-4xl pt-4 pb-7">Social App.</h1>
@@ -22,7 +33,7 @@ const SideBar = () => {
                     <MdBookmark size={30} />
                     Saved Posts
                 </NavLink>
-                <NavLink to="/profile/1" className="navlink">
+                <NavLink to={!!user.login === true ? `/profile/${user.login}` : "/auth/signin"} className="navlink">
                     <MdOutlinePersonOutline size={30} />
                     Profile
                 </NavLink>
@@ -31,14 +42,15 @@ const SideBar = () => {
                     <MdSettings size={30} />
                     Settings
                 </NavLink>
-                <button className="navlink">
-                    <MdLogout size={30} />
-                    Sign Out
-                </button>
-                <Link to="/auth/signin" className="navlink">
-                    <MdLogin size={30} />
-                    Sign In
-                </Link>
+                {!!user.login === true
+                    ? <button onClick={logOutHandle} className="navlink">
+                        <MdLogout size={30} />
+                        Sign Out
+                      </button>
+                    : <Link to="/auth/signin" className="navlink">
+                        <MdLogin size={30} />
+                        Sign In
+                      </Link>}
             </nav>
         </aside>
     )
