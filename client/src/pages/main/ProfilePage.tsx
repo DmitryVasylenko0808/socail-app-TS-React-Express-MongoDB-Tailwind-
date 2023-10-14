@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import PostsList from '../../components/PostsList';
 import { useGetAllPostsByUserIdQuery } from '../../redux/slices/postsApi';
 import { useFollowUserMutation, useGetProfileQuery, useUnfollowUserMutation } from '../../redux/slices/profilesApi';
-import ProfileInfoBlock from '../../components/ProfileInfoBlock';
 import { useAppSelector } from '../../redux/hooks';
+import PostsList from '../../components/PostsList';
 import PostForm from '../../components/PostForm';
-import { MdOutlineClose } from "react-icons/md";
-import TextField from '../../components/TextField';
-import SelectAvatarBlock from '../../components/SelectAvatarBlock';
 import EditProfileForm from '../../components/EditProfileForm';
 import Modal from '../../components/Modal';
+import ProfileInfoBlock from '../../components/ProfileInfoBlock';
 
 const ProfilePage = () => {
   const { login } = useParams();

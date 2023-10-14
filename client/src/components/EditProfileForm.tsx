@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { useEditProfileMutation, useGetProfileQuery } from "../redux/slices/profilesApi";
 import SelectAvatarBlock from "./SelectAvatarBlock";
 import TextField from "./TextField";
-import { useEditProfileMutation, useGetProfileQuery } from "../redux/slices/profilesApi";
 
 type EditProfileFormProps = {
     userLogin: string

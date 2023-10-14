@@ -13,7 +13,11 @@ const PostBody = ({ text, imageFile }: PostBodyProps) => {
             <p className="mb-4 text-zinc-500">
                 {text} <Link to="/" className="text-stripe-300 underline hover:text-stripe-500">Read more</Link>
             </p>
-            {imageFile && <img src={`${path}/${imageFile}`} alt={imageFile} className="w-full max-h-[420px] rounded-lg" />} 
+            
+            {imageFile && 
+                <div className="w-full flex justify-center">
+                    <img src={`${path}/${imageFile}`} alt={imageFile} className="max-h-[420px] rounded-lg" />
+                </div>} 
         </div>
     );
 }

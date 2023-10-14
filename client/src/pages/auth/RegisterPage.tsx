@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useSignUpUserMutation } from '../../redux/slices/authApi';
 import { Link } from 'react-router-dom';
 import TextField from '../../components/TextField';
 import SelectAvatarBlock from '../../components/SelectAvatarBlock';
-import { useSignUpUserMutation } from '../../redux/slices/authApi';
 
 type ErrorRegister = {
   path: string,

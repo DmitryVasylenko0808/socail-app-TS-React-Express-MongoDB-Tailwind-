@@ -21,7 +21,7 @@ export type Post = {
     _id: string,
     user: User,
     text: string,
-    image_file: string,
+    image: string,
     comments_count: number
     likes_list: User[],
     saves_list: User[],

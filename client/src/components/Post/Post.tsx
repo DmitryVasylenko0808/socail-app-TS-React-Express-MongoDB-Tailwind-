@@ -8,7 +8,7 @@ import { Post as PostType } from "../../types";
 
 type PostProps = PostType;
 
-const Post = ({ _id, user, text, image_file, comments_count, likes_list, saves_list, createdAt, updatedAt }: PostProps) => {
+const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, createdAt, updatedAt }: PostProps) => {
     return (
         <article className="py-4 flex gap-x-4">
             <PostAvatarBlock login={user.login} imageFile={user.avatar_file} />
@@ -20,7 +20,7 @@ const Post = ({ _id, user, text, image_file, comments_count, likes_list, saves_l
                     postDate={createdAt} 
                     postUpdatedDate={updatedAt} 
                 />
-                <PostBody text={text} imageFile={image_file}/>
+                <PostBody text={text} imageFile={image}/>
                 <PostFooter 
                     comments_count={comments_count} 
                     likes={likes_list} 

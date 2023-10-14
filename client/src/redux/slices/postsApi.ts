@@ -10,8 +10,19 @@ export const postsApi = emptySplitApi.injectEndpoints({
         getAllPostsByUserId: builder.query<Post[], string | undefined>({
             query: (id) => `posts/user/${id}`
         }),
-        
+        createPost: builder.mutation<boolean, FormData>({
+            query: (body) => ({
+                url: "posts/",
+                method: "POST",
+                body,
+                formData: true
+            })
+        })
     })
 });
 
-export const { useGetAllPostsQuery, useGetAllPostsByUserIdQuery } = postsApi;
+export const { 
+    useGetAllPostsQuery, 
+    useGetAllPostsByUserIdQuery,
+    useCreatePostMutation 
+} = postsApi;

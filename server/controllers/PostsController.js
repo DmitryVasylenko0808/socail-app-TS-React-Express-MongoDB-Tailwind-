@@ -86,8 +86,8 @@ class PostsController {
     static async create(req, res) {
         try {
             let UPostFileName = null;
-            if (req.files !== null && req.files.image_file !== null) {
-                UPostFileName = await moveFile(req.files.image_file, "../server/public/posts");
+            if (req.files && req.files.image) {
+                UPostFileName = await moveFile(req.files.image, "../server/public/posts");
             }
 
             const doc = new PostModel({
@@ -99,7 +99,7 @@ class PostsController {
             });
             await doc.save();
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -125,7 +125,7 @@ class PostsController {
                 return res.status(404).json({ success: false, message: "Post is not found" });
             }
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -157,7 +157,7 @@ class PostsController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -199,7 +199,7 @@ class PostsController {
                 }
             )
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -213,7 +213,7 @@ class PostsController {
                 return res.status(404).json({ success: false, message: "Post is not found" });
             }
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
