@@ -57,7 +57,7 @@ const RegisterPage = () => {
     formData.append("avatar_file", data.avatar_file);
 
     await signUp(formData).unwrap()
-      .catch(err => { console.log(err); setError({ ...err.data }) });
+      .catch(err => { setError({ ...err.data }) });
   }
 
   return (
@@ -94,6 +94,7 @@ const RegisterPage = () => {
         type="submit" 
         className="w-full py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
         disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
+        disabled={isLoading}
       >
         {isLoading ? "Processing..." : `Sign Up`}
       </button>

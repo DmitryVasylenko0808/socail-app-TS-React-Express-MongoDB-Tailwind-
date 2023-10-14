@@ -1,9 +1,12 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router";
+import { useAuth } from "..";
 
 
 const RequireAuth = () => {
-    if (!localStorage.getItem("token")) {
+    const isAuthorized = useAuth();
+
+    if (!isAuthorized) {
         return <Navigate to="/auth/signin" />
     }
 

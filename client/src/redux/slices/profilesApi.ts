@@ -19,6 +19,14 @@ type Following = {
 type FetchFollowersResponse = Follower[];
 type FetchFollowingsResponse = Following[];
 
+type ProfilesEditRequest = {
+    name: string,
+    about: string,
+    country: string,
+    city: string,
+    avatar_file?: string
+}
+
 export const profilesApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         getProfile: builder.query<User, string | undefined>({
@@ -48,6 +56,14 @@ export const profilesApi = emptySplitApi.injectEndpoints({
                 url: `profiles/remove_follower/${userId}`,
                 method: "DELETE"
             })
+        }),
+        editProfile: builder.mutation<boolean, FormData>({
+            query: (body) => ({
+                url: "profiles/edit",
+                method: "PATCH",
+                body,
+                formData: true
+            })
         })
     })
 });
@@ -58,5 +74,6 @@ export const {
     useGetFollowingsQuery,
     useFollowUserMutation,
     useUnfollowUserMutation,
-    useRemoveFollowerUserMutation
+    useRemoveFollowerUserMutation,
+    useEditProfileMutation
 } = profilesApi;

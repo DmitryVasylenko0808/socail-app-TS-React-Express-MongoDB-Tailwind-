@@ -27,22 +27,38 @@ class ProfilesController {
                 UAvatarFileName = await moveFile(req.files.avatar_file, "../server/public/avatars");
             }
 
-            await UserModel.updateOne(
-                {
-                    _id: req.userId
-                },
-                {
-                    name: req.body.name,
-                    location: {
-                        country: req.body.country ?? null,
-                        city: req.body.city ?? null
+            if (req.files && req.files.avatar_file) {
+                await UserModel.updateOne(
+                    {
+                        _id: req.userId
                     },
-                    about: req.body.about ?? null,
-                    avatar_file: UAvatarFileName,
-                }
-            );
+                    {
+                        name: req.body.name,
+                        location: {
+                            country: req.body.country ?? null,
+                            city: req.body.city ?? null
+                        },
+                        about: req.body.about ?? null,
+                        avatar_file: UAvatarFileName
+                    }
+                );
+            } else {
+                await UserModel.updateOne(
+                    {
+                        _id: req.userId
+                    },
+                    {
+                        name: req.body.name,
+                        location: {
+                            country: req.body.country ?? null,
+                            city: req.body.city ?? null
+                        },
+                        about: req.body.about ?? null
+                    }
+                );
+            }
 
-            res.json({ succes: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -60,7 +76,7 @@ class ProfilesController {
                 }
             );
 
-            res.json({ succes: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -71,7 +87,7 @@ class ProfilesController {
         try {
             await UserModel.deleteOne({ _id: req.userId });
 
-            res.json({ succes: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

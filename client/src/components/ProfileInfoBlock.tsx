@@ -9,10 +9,11 @@ type ProfileInfoBlockProps = User & {
     isFollower: boolean,
     isFollowing: boolean,
     onFollow?: () => void,
-    onUnfollow?: () => void
+    onUnfollow?: () => void,
+    openEditForm?: () => void,
 }
 
-const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers, followings, postsCount, isOwnProfile, isFollower, isFollowing, onFollow, onUnfollow }: ProfileInfoBlockProps) => {
+const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers, followings, postsCount, isOwnProfile, isFollower, isFollowing, onFollow, onUnfollow, openEditForm }: ProfileInfoBlockProps) => {
     const path = "http://localhost:5000/static/avatars";
 
     let imageSrc;
@@ -23,14 +24,14 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
     }
 
     const editProfileButton =
-        <Link
-            to={"/"}
+        <button
+            onClick={openEditForm}
             className="w-[200px] h-[48px] inline-flex justify-center items-center gap-x-3 border border-stripe-500 rounded-full 
             font-bold text-stripe-500 hover:bg-stripe-100"
         >
             <MdEdit size={24} />
             Edit Profile
-        </Link>
+        </button>
 
     const followButton =
         <button

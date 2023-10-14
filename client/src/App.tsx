@@ -16,16 +16,16 @@ import RequireAuth from './pages/RequireAuth';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { useGetAuthorizedUserQuery } from "./redux/slices/authApi";
 import { setUserInfo } from './redux/authSlice';
+import { useAuth } from '.';
 
 const App = () => {
+  const isAuthorized = useAuth();
   const user = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
 
-  const isAuth = () => !!localStorage.getItem("token");
-
   const { data: authData } = useGetAuthorizedUserQuery(null, { skip: !!user.login === true });
 
-  if (isAuth() && !user.login) {
+  if (isAuthorized && !user.login) {
     dispatch(setUserInfo({ 
       ...authData, 
       token: localStorage.getItem("token")
@@ -41,8 +41,8 @@ const App = () => {
             <Route path="/post/:id" element={<PostPage />} />
             <Route path="/profile/:login" element={<ProfilePage />} />
             <Route element={<RequireAuth />}>
-              <Route path='/followers/:login' element={<FollowersPage />} />
-              <Route path='/followings/:login' element={<FollowingsPage />} />
+              <Route path="/followers/:login" element={<FollowersPage />} />
+              <Route path="/followings/:login" element={<FollowingsPage />} />
               <Route path="/saved" element={<SavedPostsPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/blacklist" element={<BlackListPage />} />
