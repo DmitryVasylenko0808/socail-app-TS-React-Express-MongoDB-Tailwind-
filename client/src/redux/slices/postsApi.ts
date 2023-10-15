@@ -2,6 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Post } from "../../types";
 import { emptySplitApi } from "./emptySplitApi";
 
+type RequestEditPost = {
+    postId: string,
+    text: string,
+    image_file: string
+}
+
 export const postsApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         getAllPosts: builder.query<Post[], { limit: number, skip: number }>({
@@ -10,12 +16,35 @@ export const postsApi = emptySplitApi.injectEndpoints({
         getAllPostsByUserId: builder.query<Post[], string | undefined>({
             query: (id) => `posts/user/${id}`
         }),
+        getOnePostById: builder.query<Post, { userId: string, postId: string }>({
+            query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`
+        }),
         createPost: builder.mutation<boolean, FormData>({
             query: (body) => ({
                 url: "posts/",
                 method: "POST",
                 body,
                 formData: true
+            })
+        }),
+        editPost: builder.mutation<boolean, RequestEditPost>({
+            query: ({ postId, text, image_file }) => {
+                const formData = new FormData();
+                formData.append("text", text);
+                formData.append("image_file", image_file);
+
+                return {
+                    url: `posts/${postId}`,
+                    method: "PATCH",
+                    body: formData,
+                    formData: true
+                }
+            }
+        }),
+        deletePost: builder.mutation<boolean, string>({
+            query: (postId) => ({
+                url: `posts/${postId}`,
+                method: "DELETE"
             })
         })
     })
@@ -24,5 +53,8 @@ export const postsApi = emptySplitApi.injectEndpoints({
 export const { 
     useGetAllPostsQuery, 
     useGetAllPostsByUserIdQuery,
-    useCreatePostMutation 
+    useGetOnePostByIdQuery,
+    useCreatePostMutation,
+    useEditPostMutation,
+    useDeletePostMutation 
 } = postsApi;

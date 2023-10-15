@@ -32,7 +32,9 @@ const PostForm = () => {
         formData.append("text", data.text);
         formData.append("image", data.image);
 
-        await createPost(formData).unwrap()
+        await createPost(formData)
+            .unwrap()
+            .then(() => { setError(null) })
             .catch(err => { setError({ ...err.data }) });
     }
 

@@ -20,5 +20,5 @@ body {
 }
 
 .navlink.active {
-  @apply bg-stripe-500 text-white;
+  @apply bg-stripe-400 text-white;
 }

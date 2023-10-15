@@ -32,7 +32,7 @@ class PostsController {
                 return res.status(404).json({ success: false, message: "Post is not found" });
             }
             
-            res.json({ success: true, post });
+            res.json(post);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -109,17 +109,27 @@ class PostsController {
     static async edit(req, res) {
         try {
             let UPostFileName = null;
-            if (req.files !== null && req.files.image_file !== null) {
+            if (req.files && req.files.image_file) {
                 UPostFileName = await moveFile(req.files.image_file, "../server/public/posts");
             }
 
-            const post = await PostModel.findByIdAndUpdate(
-                { _id: req.params.postId },
-                {
-                    text: req.body.text,
-                    image: UPostFileName
-                }
-            );
+            let post;
+            if (req.files && req.files.image_file) {
+                post = await PostModel.findByIdAndUpdate(
+                    { _id: req.params.postId },
+                    {
+                        text: req.body.text,
+                        image: UPostFileName
+                    }
+                );
+            } else {
+                post = await PostModel.findByIdAndUpdate(
+                    { _id: req.params.postId },
+                    {
+                        text: req.body.text
+                    }
+                );
+            }
 
             if (!post) {
                 return res.status(404).json({ success: false, message: "Post is not found" });

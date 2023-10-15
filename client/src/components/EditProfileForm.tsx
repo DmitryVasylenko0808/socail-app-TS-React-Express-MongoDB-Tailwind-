@@ -45,7 +45,9 @@ const EditProfileForm = ({ userLogin }: EditProfileFormProps) => {
         formData.append("city", data.city);
         formData.append("avatar_file", data.avatar_file);
 
-        await editProfile(formData).unwrap()
+        await editProfile(formData)
+            .unwrap()
+            .then(() => { setError(null) })
             .catch(err => { setError({ ...err.data }) });
     }
 

@@ -21,7 +21,7 @@ const isFollower = (req, privateUser) => {
 
 const isPrivateUser = async (req, res, next) => {
     try {
-        const user = await UserModel.findOne({ login: req.params.login});
+        const user = await UserModel.findOne({ $or: [{login: req.params.login}, {_id: req.params.userId}] });
 
         if (!user.is_private || isFollower(req, user)) {
             next();
