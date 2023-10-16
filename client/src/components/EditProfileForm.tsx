@@ -38,14 +38,7 @@ const EditProfileForm = ({ userLogin }: EditProfileFormProps) => {
             avatar_file: target.avatar_file.files[0]
         };
 
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("about", data.about);
-        formData.append("country", data.country);
-        formData.append("city", data.city);
-        formData.append("avatar_file", data.avatar_file);
-
-        await editProfile(formData)
+        await editProfile({ userId: user?._id, ...data })
             .unwrap()
             .then(() => { setError(null) })
             .catch(err => { setError({ ...err.data }) });

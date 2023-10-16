@@ -11,13 +11,16 @@ type RequestEditPost = {
 export const postsApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         getAllPosts: builder.query<Post[], { limit: number, skip: number }>({
-            query: ({ limit, skip }) => `posts/limit/${limit}/skip/${skip}`
+            query: ({ limit, skip }) => `posts/limit/${limit}/skip/${skip}`,
+            providesTags: ["Post"]
         }),
         getAllPostsByUserId: builder.query<Post[], string | undefined>({
-            query: (id) => `posts/user/${id}`
+            query: (id) => `posts/user/${id}`,
+            providesTags: ["Post"]
         }),
         getOnePostById: builder.query<Post, { userId: string, postId: string }>({
-            query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`
+            query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`,
+            providesTags: ["Post"]
         }),
         createPost: builder.mutation<boolean, FormData>({
             query: (body) => ({
@@ -25,7 +28,8 @@ export const postsApi = emptySplitApi.injectEndpoints({
                 method: "POST",
                 body,
                 formData: true
-            })
+            }),
+            invalidatesTags: ["Post"]
         }),
         editPost: builder.mutation<boolean, RequestEditPost>({
             query: ({ postId, text, image_file }) => {
@@ -39,13 +43,15 @@ export const postsApi = emptySplitApi.injectEndpoints({
                     body: formData,
                     formData: true
                 }
-            }
+            },
+            invalidatesTags: ["Post"]
         }),
         deletePost: builder.mutation<boolean, string>({
             query: (postId) => ({
                 url: `posts/${postId}`,
                 method: "DELETE"
-            })
+            }),
+            invalidatesTags: ["Post"]
         })
     })
 });
