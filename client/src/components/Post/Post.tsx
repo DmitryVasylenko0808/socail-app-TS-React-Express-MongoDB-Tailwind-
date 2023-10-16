@@ -8,7 +8,7 @@ import PostFooter from "./PostFooter";
 import PostMenu from "./PostMenu";
 import { Post as PostType } from "../../types";
 import { useAppSelector } from "../../redux/hooks";
-import { useDeletePostMutation } from "../../redux/slices/postsApi";
+import { useDeletePostMutation, useLikePostMutation, useSavePostMutation } from "../../redux/slices/postsApi";
 import Modal from "../Modal";
 import EditPostForm from "../EditPostForm";
 
@@ -19,6 +19,8 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
     const authUser = useAppSelector(state => state.auth);
 
     const [deletePost, { isSuccess }] = useDeletePostMutation();
+    const [likePost, { isSuccess: isLikeSuccess }] = useLikePostMutation();
+    const [savePost, { isSuccess: isSaveSuccess }] = useSavePostMutation();
 
     const openEditFormHandle = () => {
         setIsOpenEditFormPost(true);
@@ -29,9 +31,15 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
     };
 
     const deleteHandle = async () => {
-        await deletePost(_id)
-            .unwrap()
-            .catch(err => { console.log(err) });
+        await deletePost(_id);
+    }
+
+    const likeHandle = async () => {
+        await likePost(_id);
+    }
+
+    const saveHandle = async () => {
+        await savePost(_id);
     }
 
     return (
@@ -50,6 +58,10 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
                     comments_count={comments_count} 
                     likes={likes_list} 
                     saves={saves_list} 
+                    isLiked={!!likes_list.find(item => item.user === authUser.id)}
+                    isSaved={!!saves_list.find(item => item.user === authUser.id)}
+                    onLike={likeHandle}
+                    onSave={saveHandle}
                 />
             </div>
 

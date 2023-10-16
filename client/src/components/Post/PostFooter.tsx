@@ -11,23 +11,27 @@ import { Link } from "react-router-dom";
 
 type PostFooterProps = {
     comments_count: number,
-    likes: User[],
-    saves: User[]
+    likes: { user: string }[],
+    saves: { user: string }[],
+    isLiked: boolean,
+    isSaved: boolean,
+    onLike: () => Promise<void>,
+    onSave: () => Promise<void>,
 }
 
-const PostFooter = ({ comments_count, likes, saves }: PostFooterProps) => {
+const PostFooter = ({ comments_count, likes, saves, isLiked, isSaved, onLike, onSave }: PostFooterProps) => {
     return (
         <div className="p-4 flex justify-between text-zinc-500">
             <Link to={`/`} className="w-[100px] flex items-center gap-x-2">
                 <MdOutlineModeComment size={26} />
                 {comments_count ? 0 : comments_count}
             </Link>
-            <button className="w-[100px] flex items-center gap-x-2">
-                <MdOutlineFavoriteBorder size={26} />
+            <button onClick={onLike} disabled={isLiked} className="w-[100px] flex items-center gap-x-2">
+                {isLiked ? <MdOutlineFavorite size={26} /> : <MdOutlineFavoriteBorder size={26} />}
                 {likes.length}
             </button>
-            <button className="w-[100px] flex items-center gap-x-2">
-                <MdBookmarkBorder size={26} />
+            <button onClick={onSave} disabled={isSaved} className="w-[100px] flex items-center gap-x-2">
+                {isSaved ? <MdOutlineBookmark size={26} /> : <MdBookmarkBorder size={26} />}
                 {saves.length}
             </button>
         </div>

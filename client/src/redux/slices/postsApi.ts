@@ -52,6 +52,20 @@ export const postsApi = emptySplitApi.injectEndpoints({
                 method: "DELETE"
             }),
             invalidatesTags: ["Post"]
+        }),
+        likePost: builder.mutation<boolean, string>({
+            query: (postId) => ({
+                url: `posts/like/${postId}`,
+                method: "PATCH"
+            }),
+            invalidatesTags: ["Post"]
+        }),
+        savePost: builder.mutation<boolean, string>({
+            query: (postId) => ({
+                url: `posts/save/${postId}`,
+                method: "PATCH"
+            }),
+            invalidatesTags: ["Post"]
         })
     })
 });
@@ -62,5 +76,7 @@ export const {
     useGetOnePostByIdQuery,
     useCreatePostMutation,
     useEditPostMutation,
-    useDeletePostMutation 
+    useDeletePostMutation,
+    useLikePostMutation,
+    useSavePostMutation 
 } = postsApi;

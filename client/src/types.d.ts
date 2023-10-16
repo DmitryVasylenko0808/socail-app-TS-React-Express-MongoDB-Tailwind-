@@ -22,9 +22,9 @@ export type Post = {
     user: User,
     text: string,
     image: string,
-    comments_count: number
-    likes_list: User[],
-    saves_list: User[],
+    comments_count: number,
+    likes_list: { user: string }[],
+    saves_list: { user: string }[],
     createdAt: string,
     updatedAt: string
 };
