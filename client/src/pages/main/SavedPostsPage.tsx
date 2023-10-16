@@ -1,8 +1,20 @@
 import React from 'react';
+import { useGetSavedPostsQuery } from '../../redux/slices/postsApi';
+import PostsList from '../../components/PostsList';
 
 const SavedPostsPage = () => {
+  const { data: savedPosts, isLoading, isSuccess } = useGetSavedPostsQuery(null);
+
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
   return (
-    <div>SavedPostsPage</div>
+    <>
+      {isSuccess && savedPosts?.length 
+        ? <PostsList posts={savedPosts} />
+        : <div>No one post is not saved</div>}
+    </>
   );
 }
 

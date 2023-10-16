@@ -70,13 +70,13 @@ class PostsController {
                 return res.status(404).json({ success: false, message: "User is not found" });
             }
 
-            let { saved_posts } = user._doc;
-            saved_posts = saved_posts.map(p => ({ ...p.post._doc }));
+            let { saved_posts } = user;
+            saved_posts = saved_posts.map(p => p.post);
             if (saved_posts.length === 0) {
                 return res.status(404).json({ success: false, message: "Posts are not found" });
             }
 
-            res.json({ success: true, savedPosts: saved_posts });
+            res.json(saved_posts);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

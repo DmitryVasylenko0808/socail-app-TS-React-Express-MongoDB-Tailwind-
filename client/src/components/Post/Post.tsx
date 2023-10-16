@@ -6,11 +6,11 @@ import PostHeader from "./PostHeader";
 import PostBody from "./PostBody";
 import PostFooter from "./PostFooter";
 import PostMenu from "./PostMenu";
+import Modal from "../Modal";
+import EditPostForm from "../EditPostForm";
 import { Post as PostType } from "../../types";
 import { useAppSelector } from "../../redux/hooks";
 import { useDeletePostMutation, useLikePostMutation, useSavePostMutation } from "../../redux/slices/postsApi";
-import Modal from "../Modal";
-import EditPostForm from "../EditPostForm";
 
 type PostProps = PostType;
 

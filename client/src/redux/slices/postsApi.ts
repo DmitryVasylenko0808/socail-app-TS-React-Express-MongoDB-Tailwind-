@@ -22,6 +22,10 @@ export const postsApi = emptySplitApi.injectEndpoints({
             query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`,
             providesTags: ["Post"]
         }),
+        getSavedPosts: builder.query<Post[], null>({
+            query: () => "posts/saved",
+            providesTags: ["Post"]
+        }),
         createPost: builder.mutation<boolean, FormData>({
             query: (body) => ({
                 url: "posts/",
@@ -74,6 +78,7 @@ export const {
     useGetAllPostsQuery, 
     useGetAllPostsByUserIdQuery,
     useGetOnePostByIdQuery,
+    useGetSavedPostsQuery,
     useCreatePostMutation,
     useEditPostMutation,
     useDeletePostMutation,
