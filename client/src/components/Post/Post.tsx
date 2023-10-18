@@ -53,8 +53,15 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
                     postDate={createdAt} 
                     postUpdatedDate={updatedAt} 
                 />
-                <PostBody text={text} imageFile={image} />
+                <PostBody 
+                    text={text} 
+                    imageFile={image}
+                    authorId={user._id}
+                    postId={_id} 
+                />
                 <PostFooter 
+                    authorId={user._id}
+                    postId={_id} 
                     comments_count={comments_count} 
                     likes={likes_list} 
                     saves={saves_list} 

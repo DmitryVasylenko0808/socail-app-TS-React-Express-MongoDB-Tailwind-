@@ -18,7 +18,7 @@ export const postsApi = emptySplitApi.injectEndpoints({
             query: (id) => `posts/user/${id}`,
             providesTags: ["Post"]
         }),
-        getOnePostById: builder.query<Post, { userId: string, postId: string }>({
+        getOnePostById: builder.query<Post, { userId: string | undefined, postId: string | undefined }>({
             query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`,
             providesTags: ["Post"]
         }),

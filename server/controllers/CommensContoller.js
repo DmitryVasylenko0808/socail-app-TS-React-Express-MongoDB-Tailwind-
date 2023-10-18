@@ -5,15 +5,13 @@ class CommentsController {
     static async getAllByPostId(req, res) {
         try {
             const comments = await CommentModel.find({ post: req.params.postId })
-                .skip(req.params.limit * req.params.skip)
-                .limit(req.params.limit)
                 .populate("user", "login name avatar_file");
 
-            if (comments.length === 0) {
-                return res.status(404).json({ success: false, message: "Comments are not found" });
-            }
+            // if (comments.length === 0) {
+            //     return res.status(404).json({ success: false, message: "Comments are not found" });
+            // }
 
-            res.json({ success: true, comments });
+            res.json(comments);
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false, message: "Server error" });
@@ -45,7 +43,7 @@ class CommentsController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false, message: "Server error" });
@@ -73,7 +71,7 @@ class CommentsController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false, message: "Server error" });

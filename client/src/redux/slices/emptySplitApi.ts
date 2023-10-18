@@ -8,6 +8,6 @@ export const emptySplitApi = createApi({
             headers.set("authorization", `Bearer ${localStorage.getItem("token")}`)
         }
     }),
-    tagTypes: ["Post", "User"],
+    tagTypes: ["Post", "User", "Comment"],
     endpoints: () => ({}),
 });

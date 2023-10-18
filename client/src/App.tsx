@@ -38,7 +38,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<FeedPage />} />
-            <Route path="/post/:id" element={<PostPage />} />
+            <Route path="/post/:userId/:postId" element={<PostPage />} />
             <Route path="/profile/:login" element={<ProfilePage />} />
             <Route element={<RequireAuth />}>
               <Route path="/followers/:login" element={<FollowersPage />} />
