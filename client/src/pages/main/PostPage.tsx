@@ -24,7 +24,7 @@ const PostPage = () => {
       {isPostSuccess && <Post {...post} />}
       {isPostSuccess &&
         <CommentsBlock countComments={comments ? comments.length : 0}>
-          {isAuthorized && <CommentForm />}
+          {isAuthorized && <CommentForm postId={postId} />}
           {isCommentsSuccess && <CommentsList comments={comments} />}
         </CommentsBlock>
       }

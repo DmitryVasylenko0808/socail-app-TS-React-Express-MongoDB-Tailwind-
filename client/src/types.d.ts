@@ -32,7 +32,7 @@ export type Post = {
 export type Comment = {
     _id: string,
     user: User,
-    post: Post,
+    post: string,
     text: string,
     createdAt: string
 }

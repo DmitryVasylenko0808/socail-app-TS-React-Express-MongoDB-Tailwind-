@@ -2,17 +2,24 @@ import React from "react";
 import Post from "./Post/Post";
 import { Comment } from "../types";
 import CommentItem from "./CommentItem";
+import { useAppSelector } from "../redux/hooks";
 
 type CommentsListProps = {
     comments: Comment[] | undefined;
 }
 
 const CommentsList = ({ comments }: CommentsListProps) => {
-    console.log(comments);
+    const authUser = useAppSelector(state => state.auth);
     return (
-        <>
-            {comments?.map(comment => <CommentItem {...comment} key={comment._id} />)}
-        </>
+        <div>
+            {comments?.map(comment => 
+                <CommentItem 
+                    {...comment} 
+                    isAuthor={authUser.login === comment.user.login} 
+                    key={comment._id} 
+                />
+            )}
+        </div>
     )
 }
 

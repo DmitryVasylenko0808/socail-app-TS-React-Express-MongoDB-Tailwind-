@@ -20,10 +20,6 @@ class CommentsController {
 
     static async add(req, res) {
         try {
-            if (req.body.text.length === 0) {
-                return res.status(400).json({ success: false, message: "Text is required" });
-            }
-
             const post = await PostModel.findById(req.body.postId);
             if (!post) {
                 return res.status(404).json({ success: false, message: "Post is not found" });
