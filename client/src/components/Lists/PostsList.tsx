@@ -1,6 +1,6 @@
 import React from "react";
-import Post from "./Post/Post";
-import { Post as PostType } from "../types";
+import Post from "../Post/Post";
+import { Post as PostType } from "../../types";
 
 type PostsListProps = {
     posts: PostType[] | undefined;

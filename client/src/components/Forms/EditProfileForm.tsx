@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useEditProfileMutation, useGetProfileQuery } from "../redux/slices/profilesApi";
-import SelectAvatarBlock from "./SelectAvatarBlock";
-import TextField from "./TextField";
+import { useEditProfileMutation, useGetProfileQuery } from "../../redux/services/profilesApi";
+import SelectAvatarBlock from "../SelectAvatarBlock";
+import TextField from "../TextField";
+import Loader from "../Loader";
 
 type EditProfileFormProps = {
     userLogin: string
@@ -75,11 +76,11 @@ const EditProfileForm = ({ userLogin }: EditProfileFormProps) => {
             />
             <button
                 type="submit"
-                className="w-full py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
+                className="w-full py-3 bg-stripe-400 rounded-full flex justify-center text-white font-bold hover:bg-stripe-500 
                 disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
                 disabled={isEditLoading}
             >
-                {isEditLoading ? "Loading..." : "Edit Profile"}
+                {isEditLoading ? <Loader size="normal" variant="white" /> : "Edit Profile"}
             </button>
         </form>
     );

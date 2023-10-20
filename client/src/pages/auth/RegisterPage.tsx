@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSignUpUserMutation } from '../../redux/slices/authApi';
+import { useSignUpUserMutation } from '../../redux/services/authApi';
 import { Link } from 'react-router-dom';
 import TextField from '../../components/TextField';
 import SelectAvatarBlock from '../../components/SelectAvatarBlock';
+import Loader from '../../components/Loader';
 
 type ErrorRegister = {
   path: string,
@@ -62,7 +63,7 @@ const RegisterPage = () => {
 
   return (
     <form onSubmit={registerUserHandle}>
-      <h2 className="mb-7 font-bold text-center text-2xl">Registration</h2>
+      <h2 className="mb-7 font-bold text-center text-2xl dark:text-white">Registration</h2>
       <TextField id="login" error={isExistErrorField("login")}>Login*</TextField>
       <TextField 
         id="password" 
@@ -92,11 +93,11 @@ const RegisterPage = () => {
       </p>
       <button 
         type="submit" 
-        className="w-full py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
+        className="w-full py-3 bg-stripe-400 rounded-full flex justify-center text-white font-bold hover:bg-stripe-500 
         disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : `Sign Up`}
+        {isLoading ? <Loader size="normal" variant="white" /> : `Sign Up`}
       </button>
     </form>
   );

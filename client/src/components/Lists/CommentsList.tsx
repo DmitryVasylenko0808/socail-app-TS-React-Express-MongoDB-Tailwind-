@@ -1,8 +1,8 @@
 import React from "react";
-import Post from "./Post/Post";
-import { Comment } from "../types";
-import CommentItem from "./CommentItem";
-import { useAppSelector } from "../redux/hooks";
+import Post from "../Post/Post";
+import { Comment } from "../../types";
+import CommentItem from "../CommentItem";
+import { useAppSelector } from "../../redux/hooks";
 
 type CommentsListProps = {
     comments: Comment[] | undefined;

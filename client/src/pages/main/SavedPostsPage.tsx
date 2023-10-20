@@ -1,6 +1,6 @@
 import React from 'react';
-import { useGetSavedPostsQuery } from '../../redux/slices/postsApi';
-import PostsList from '../../components/PostsList';
+import { useGetSavedPostsQuery } from '../../redux/services/postsApi';
+import PostsList from '../../components/Lists/PostsList';
 
 const SavedPostsPage = () => {
   const { data: savedPosts, isLoading, isSuccess } = useGetSavedPostsQuery(null);

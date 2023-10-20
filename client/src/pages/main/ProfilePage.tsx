@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import { useGetAllPostsByUserIdQuery } from '../../redux/slices/postsApi';
-import { useFollowUserMutation, useGetProfileQuery, useUnfollowUserMutation } from '../../redux/slices/profilesApi';
+import { useGetAllPostsByUserIdQuery } from '../../redux/services/postsApi';
+import { useFollowUserMutation, useGetProfileQuery, useUnfollowUserMutation } from '../../redux/services/profilesApi';
 import { useAppSelector } from '../../redux/hooks';
-import PostsList from '../../components/PostsList';
-import PostForm from '../../components/PostForm';
-import EditProfileForm from '../../components/EditProfileForm';
+import PostsList from '../../components/Lists/PostsList';
+import PostForm from '../../components/Forms/PostForm';
+import EditProfileForm from '../../components/Forms/EditProfileForm';
 import Modal from '../../components/Modal';
 import ProfileInfoBlock from '../../components/ProfileInfoBlock';
 

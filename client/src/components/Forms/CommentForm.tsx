@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import TextField from "./TextField";
-import { useAddCommentMutation } from "../redux/slices/commentsApi";
+import TextField from "../TextField";
+import { useAddCommentMutation } from "../../redux/services/commentsApi";
+import Loader from "../Loader";
 
 type CommentFormProps = {
     postId?: string
@@ -50,11 +51,11 @@ const CommentForm = ({ postId }: CommentFormProps) => {
             <div className="flex justify-end">
                 <button
                     type="submit"
-                    className="w-[200px] py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
+                    className="w-[200px] py-3 bg-stripe-400 rounded-full flex justify-center text-white font-bold hover:bg-stripe-500 
                     disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Loading..." : "Comment"}
+                    {isLoading ? <Loader size="normal" variant="white" /> : "Comment"}
                 </button>
             </div>
         </form>

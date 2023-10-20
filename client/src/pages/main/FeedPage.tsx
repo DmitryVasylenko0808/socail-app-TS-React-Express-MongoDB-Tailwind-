@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PostsList from '../../components/PostsList';
-import { useGetAllPostsQuery } from '../../redux/slices/postsApi';
+import PostsList from '../../components/Lists/PostsList';
+import { useGetAllPostsQuery } from '../../redux/services/postsApi';
 import { Post } from '../../types';
 
 const FeedPage = () => {

@@ -8,7 +8,7 @@ type CommentsBlockProps = {
 const CommentsBlock = ({ countComments, children }: CommentsBlockProps) => {
     return (
         <div className="">
-            <h2 className="mb-2">
+            <h2 className="mb-2 dark:text-white">
                 <span className="font-bold">{countComments}</span> Comments
             </h2>
             {children}

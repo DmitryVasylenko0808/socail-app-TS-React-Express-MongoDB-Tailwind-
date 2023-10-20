@@ -1,12 +1,12 @@
 import React from 'react';
 import { useAuth } from '../..';
 import { useParams } from 'react-router';
-import { useGetOnePostByIdQuery } from '../../redux/slices/postsApi';
+import { useGetOnePostByIdQuery } from '../../redux/services/postsApi';
 import Post from '../../components/Post/Post';
-import CommentForm from '../../components/CommentForm';
+import CommentForm from '../../components/Forms/CommentForm';
 import CommentsBlock from '../../components/CommentsBlock';
-import { useGetAllCommentsByPostIdQuery } from '../../redux/slices/commentsApi';
-import CommentsList from '../../components/CommentsList';
+import { useGetAllCommentsByPostIdQuery } from '../../redux/services/commentsApi';
+import CommentsList from '../../components/Lists/CommentsList';
 
 const PostPage = () => {
   const isAuthorized = useAuth();

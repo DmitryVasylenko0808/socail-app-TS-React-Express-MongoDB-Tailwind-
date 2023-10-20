@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import TextField from "./TextField";
-import { useEditPostMutation, useGetOnePostByIdQuery } from "../redux/slices/postsApi";
+import TextField from "../TextField";
+import { useEditPostMutation, useGetOnePostByIdQuery } from "../../redux/services/postsApi";
 import { MdOutlineImage } from "react-icons/md";
+import Loader from "../Loader";
 
 type EditPostFormProps = {
     userId: string,
@@ -107,11 +108,11 @@ const EditPostForm = ({ userId, postId }: EditPostFormProps) => {
 
             <button
                 type="submit"
-                className="w-full py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
+                className="w-full py-3 bg-stripe-400 rounded-full flex justify-center text-white font-bold hover:bg-stripe-500 
                 disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
                 disabled={isEditPostLoading}
             >
-                {isEditPostLoading ? "Loading..." : "Edit Post"}
+                {isEditPostLoading ? <Loader size="normal" variant="white" /> : "Edit Post"}
             </button>
         </form>
     );

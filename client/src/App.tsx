@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from "react-router-dom";
 import MainLayout from './layouts/MainLayout';
 import FeedPage from './pages/main/FeedPage';
@@ -14,7 +14,7 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import RequireAuth from './pages/RequireAuth';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
-import { useGetAuthorizedUserQuery } from "./redux/slices/authApi";
+import { useGetAuthorizedUserQuery } from "./redux/services/authApi";
 import { setUserInfo } from './redux/authSlice';
 import { useAuth } from '.';
 
@@ -25,15 +25,22 @@ const App = () => {
 
   const { data: authData } = useGetAuthorizedUserQuery(null, { skip: !!user.login === true });
 
-  if (isAuthorized && !user.login) {
-    dispatch(setUserInfo({ 
-      ...authData, 
-      token: localStorage.getItem("token")
-    }))
-  }
+  useEffect(() => {
+    if (isAuthorized && !user.login) {
+      dispatch(setUserInfo({ 
+        ...authData, 
+        token: localStorage.getItem("token")
+      }))
+    }
+
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    }
+  }, [user.login, authData]);
 
   return (
-    <div className="h-full">
+    <div className="min-h-screen h-max dark:bg-slate-950">
       <div className="container mx-auto h-full">
         <Routes>
           <Route path="/" element={<MainLayout />}>

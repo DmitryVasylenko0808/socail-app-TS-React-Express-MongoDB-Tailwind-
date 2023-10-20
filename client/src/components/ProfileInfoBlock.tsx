@@ -27,7 +27,7 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
         <button
             onClick={openEditForm}
             className="w-[200px] h-[48px] inline-flex justify-center items-center gap-x-3 border border-stripe-500 rounded-full 
-            font-bold text-stripe-500 hover:bg-stripe-100"
+            font-bold text-stripe-500 hover:bg-stripe-100 dark:hover:bg-stripe-500/20"
         >
             <MdEdit size={24} />
             Edit Profile
@@ -72,10 +72,10 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
                 </div>
             </div>
 
-            <div className="mb-6 py-4 border-b-2">
-                <h2 className="text-2xl font-bold">{name}</h2>
+            <div className="mb-6 py-4 border-b-2 dark:border-slate-700">
+                <h2 className="text-2xl font-bold dark:text-white">{name}</h2>
                 <div className="mb-2 text-zinc-500">{`@${login}`}</div>
-                <p className="mb-6">
+                <p className="mb-6 dark:text-zinc-500">
                     {about}
                 </p>
                 <div className="mb-3 flex gap-x-8 text-zinc-500">
@@ -84,7 +84,7 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
                         {location.country}, {location.city}
                     </span>
                 </div>
-                <div className="flex gap-x-8">
+                <div className="flex gap-x-8 dark:text-white">
                     <div className="">
                         <span className="font-bold">{postsCount}</span> Posts
                     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Comment } from "../types";
 import { MdDeleteOutline } from "react-icons/md";
-import { useRemoveCommentMutation } from "../redux/slices/commentsApi";
+import { useRemoveCommentMutation } from "../redux/services/commentsApi";
 
 type CommentItemProps = Comment & { isAuthor: boolean };
 
@@ -38,7 +38,7 @@ const CommentItem = ({ _id, user, post, text, createdAt, isAuthor }: CommentItem
             <div className="flex-auto">
                 <div className="flex justify-between">
                     <div className="mb-1 flex items-center gap-x-2">
-                        <Link className="text-xl font-bold" to={`/profile/${user.login}`}>{user.name}</Link>
+                        <Link className="text-xl font-bold dark:text-white" to={`/profile/${user.login}`}>{user.name}</Link>
                         <Link className="text-zinc-500" to={`/profile/${user.login}`}>{`@${user.login}`}</Link>
                         <span className="text-zinc-500">{date}</span>
                     </div>

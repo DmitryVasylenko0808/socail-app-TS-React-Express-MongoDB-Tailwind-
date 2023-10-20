@@ -1,8 +1,8 @@
 import React from 'react';
-import { useGetFollowersQuery, useRemoveFollowerUserMutation } from '../../redux/slices/profilesApi';
+import { useGetFollowersQuery, useRemoveFollowerUserMutation } from '../../redux/services/profilesApi';
 import { useParams } from 'react-router';
 import { useAppSelector } from '../../redux/hooks';
-import UsersList from '../../components/UsersList';
+import UsersList from '../../components/Lists/UsersList';
 
 const FollowersPage = () => {
   const { login } = useParams();

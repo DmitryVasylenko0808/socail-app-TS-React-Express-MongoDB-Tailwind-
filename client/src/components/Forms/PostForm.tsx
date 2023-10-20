@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import TextField from "./TextField";
+import TextField from "../TextField";
 import { MdOutlineImage } from "react-icons/md";
-import { useCreatePostMutation } from "../redux/slices/postsApi";
+import { useCreatePostMutation } from "../../redux/services/postsApi";
+import Loader from "../Loader";
 
 type CreateError = {
     path: string,
@@ -88,11 +89,11 @@ const PostForm = () => {
                 </label>
                 <button
                     type="submit"
-                    className="w-[200px] py-3 bg-stripe-400 rounded-full text-white font-bold hover:bg-stripe-500 
+                    className="w-[200px] py-3 bg-stripe-400 rounded-full flex justify-center text-white font-bold hover:bg-stripe-500 
                     disabled:opacity-50 disabled:cursor-auto hover:disabled:bg-stripe-400"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Loading..." : "Post"}
+                    {isLoading ? <Loader size="normal" variant="white" /> : "Post"}
                 </button>
             </div>
         </form>

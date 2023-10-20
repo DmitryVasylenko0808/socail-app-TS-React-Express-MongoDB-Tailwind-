@@ -22,8 +22,8 @@ const SideBar = () => {
     }
     
     return (
-        <aside className="h-full fixed top-0 flex-none w-[270px] px-5 border-r">
-            <h1 className="font-bold text-4xl pt-4 pb-7">Social App.</h1>
+        <aside className="h-full fixed top-0 flex-none w-[270px] px-5 border-r dark:border-slate-700">
+            <h1 className="font-bold text-4xl pt-4 pb-7 dark:text-white">Social App.</h1>
             <nav className="flex flex-col text-xl text-zinc-500/75">
                 <NavLink to="/" className="navlink">
                     <MdHome size={30} />
@@ -37,7 +37,7 @@ const SideBar = () => {
                     <MdOutlinePersonOutline size={30} />
                     Profile
                 </NavLink>
-                <hr className="my-3 border-zinc-200" />
+                <hr className="my-3 border-zinc-200 dark:border-slate-700" />
                 <NavLink to="/settings" className="navlink">
                     <MdSettings size={30} />
                     Settings

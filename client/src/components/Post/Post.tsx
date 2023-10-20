@@ -1,20 +1,39 @@
 import React, { useState } from "react";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { MdDeleteOutline, MdEdit } from "react-icons/md";
-import PostAvatarBlock from "./PostAvatarBlock";
-import PostHeader from "./PostHeader";
-import PostBody from "./PostBody";
-import PostFooter from "./PostFooter";
+import { useAppSelector } from "../../redux/hooks";
+import {
+    useDeletePostMutation,
+    useLikePostMutation,
+    useSavePostMutation
+} from "../../redux/services/postsApi";
+import { Link } from "react-router-dom";
+import {
+    MdBookmarkBorder,
+    MdOutlineBookmark,
+    MdOutlineFavorite,
+    MdOutlineFavoriteBorder,
+    MdOutlineModeComment
+} from "react-icons/md";
 import PostMenu from "./PostMenu";
 import Modal from "../Modal";
-import EditPostForm from "../EditPostForm";
+import EditPostForm from "../Forms/EditPostForm";
 import { Post as PostType } from "../../types";
-import { useAppSelector } from "../../redux/hooks";
-import { useDeletePostMutation, useLikePostMutation, useSavePostMutation } from "../../redux/slices/postsApi";
 
 type PostProps = PostType;
 
 const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, createdAt, updatedAt }: PostProps) => {
+    const path = "http://localhost:5000/static/avatars";
+    const pathPosts = "http://localhost:5000/static/posts";
+
+    let imageFile;
+    if (!user.avatar_file) {
+        imageFile = `${window.location.origin}/nullavatar.jpg`;
+    } else {
+        imageFile = `${path}/${user.avatar_file}`;
+    }
+
+    let date: string | string[] = createdAt.split(/-|:|T/);
+    date = `${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`;
+
     const [isOpedEditPostForm, setIsOpenEditFormPost] = useState<boolean>(false);
     const authUser = useAppSelector(state => state.auth);
 
@@ -42,47 +61,66 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
         await savePost(_id);
     }
 
+    const isAuthor = authUser.login === user.login;
+    const isLiked = !!likes_list.find(item => item.user === authUser.id);
+    const isSaved = !!saves_list.find(item => item.user === authUser.id);
+
     return (
         <article className="py-4 flex gap-x-4">
-            <PostAvatarBlock login={user.login} imageFile={user.avatar_file} />
-
-            <div className="flex-auto">
-                <PostHeader 
-                    name={user.name} 
-                    login={user.login} 
-                    postDate={createdAt} 
-                    postUpdatedDate={updatedAt} 
-                />
-                <PostBody 
-                    text={text} 
-                    imageFile={image}
-                    authorId={user._id}
-                    postId={_id} 
-                />
-                <PostFooter 
-                    authorId={user._id}
-                    postId={_id} 
-                    comments_count={comments_count} 
-                    likes={likes_list} 
-                    saves={saves_list} 
-                    isLiked={!!likes_list.find(item => item.user === authUser.id)}
-                    isSaved={!!saves_list.find(item => item.user === authUser.id)}
-                    onLike={likeHandle}
-                    onSave={saveHandle}
-                />
+            <div className="w-[50px]">
+                <Link to={`/profile/${user.login}`}>
+                    <img src={imageFile} alt={user.login} className="min-w-[50px] h-[50px] rounded-full object-cover" />
+                </Link>
             </div>
 
-            {authUser.login === user.login && 
-                <PostMenu 
-                    onEdit={openEditFormHandle} 
-                    onDelete={deleteHandle} 
-                />
-            }
+            <div className="flex-auto">
+                <div className="flex justify-between items-center">
+                    <div className="mb-1 flex items-center gap-x-2">
+                        <Link to={`/profile/${user.login}`} className="text-xl font-bold dark:text-white">{user.name}</Link>
+                        <Link to={`/profile/${user.login}`} className="text-zinc-500">{`@${user.login}`}</Link>
+                        <span className="text-zinc-500">{date}</span>
+                    </div>
+                    {isAuthor &&
+                        <PostMenu
+                            onEdit={openEditFormHandle}
+                            onDelete={deleteHandle}
+                        />
+                    }
+                </div>
+
+                <div className="break-all">
+                    <p className="mb-4 text-zinc-500">
+                        {text} <Link to={`/post/${user._id}/${_id}`} className="text-stripe-300 underline hover:text-stripe-500">Read more</Link>
+                    </p>
+
+                    {image &&
+                        <div className="w-full flex justify-center">
+                            <img src={`${pathPosts}/${image}`} alt={image} className="max-h-[420px] rounded-lg" />
+                        </div>
+                    }
+                </div>
+
+                <div className="p-4 flex justify-between text-zinc-500">
+                    <Link to={`/post/${user._id}/${_id}`} className="w-[100px] flex items-center gap-x-2">
+                        <MdOutlineModeComment size={26} />
+                        {comments_count}
+                    </Link>
+                    <button onClick={likeHandle} disabled={isLiked} className="w-[100px] flex items-center gap-x-2">
+                        {isLiked ? <MdOutlineFavorite size={26} /> : <MdOutlineFavoriteBorder size={26} />}
+                        {likes_list.length}
+                    </button>
+                    <button onClick={saveHandle} disabled={isSaved} className="w-[100px] flex items-center gap-x-2">
+                        {isSaved ? <MdOutlineBookmark size={26} /> : <MdBookmarkBorder size={26} />}
+                        {saves_list.length}
+                    </button>
+                </div>
+            </div>
 
             {isOpedEditPostForm &&
                 <Modal onClose={closeEditFormHandle}>
                     <EditPostForm userId={authUser.id} postId={_id} />
-                </Modal>}
+                </Modal>
+            }
         </article>
     );
 }
