@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import { User } from "../types";
-import { MdLocationPin, MdEdit } from "react-icons/md";
+import { MdLocationPin, MdEdit, MdDeleteOutline } from "react-icons/md";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 type ProfileInfoBlockProps = User & {
     postsCount: number,
@@ -10,10 +11,11 @@ type ProfileInfoBlockProps = User & {
     isFollowing: boolean,
     onFollow?: () => void,
     onUnfollow?: () => void,
+    onAddToBlackList?: () => void,
     openEditForm?: () => void,
 }
 
-const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers, followings, postsCount, isOwnProfile, isFollower, isFollowing, onFollow, onUnfollow, openEditForm }: ProfileInfoBlockProps) => {
+const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers, followings, postsCount, isOwnProfile, isFollower, isFollowing, onFollow, onUnfollow, onAddToBlackList, openEditForm }: ProfileInfoBlockProps) => {
     const path = "http://localhost:5000/static/avatars";
 
     let imageSrc;
@@ -44,7 +46,8 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
     const unfollowButton =
         <button
             onClick={onUnfollow}
-            className="w-[200px] h-[48px] bg-stripe-400 rounded-full font-bold text-black hover:bg-stripe-500"
+            className="w-[200px] h-[48px] bg-zinc-200 rounded-full font-bold hover:bg-zinc-300 
+            dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900"
         >
             Unfollow
         </button>
@@ -67,8 +70,19 @@ const ProfileInfoBlock = ({ avatar_file, name, login, about, location, followers
                     alt="avatar"
                     className="w-[160px] h-[160px] rounded-full"
                 />
-                <div className="flex gap-x-3">
+                <div className="flex items-center gap-x-5">
                     {setButton()}
+                    {!isOwnProfile && 
+                        <div className="group relative text-zinc-500 cursor-pointer h-max">
+                            <HiDotsHorizontal size={30} />
+                            <div className="hidden group-hover:block absolute top-[16px] right-[8px] bg-white border rounded-lg shadow-xl text-lg dark:bg-slate-900 dark:border-none">
+                                <button onClick={onAddToBlackList} className="w-max h-[46px] px-3 flex items-center gap-x-2 border-b dark:border-slate-700 hover:bg-zinc-100 dark:hover:bg-slate-800">
+                                    <MdEdit size={20} />
+                                    Add to Black List
+                                </button>
+                            </div>
+                        </div>    
+                    }
                 </div>
             </div>
 

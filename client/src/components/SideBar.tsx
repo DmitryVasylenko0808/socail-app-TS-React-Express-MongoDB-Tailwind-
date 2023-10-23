@@ -23,7 +23,7 @@ const SideBar = () => {
     
     return (
         <aside className="h-full fixed top-0 flex-none w-[270px] px-5 border-r dark:border-slate-700">
-            <h1 className="font-bold text-4xl pt-4 pb-7 dark:text-white">Social App.</h1>
+            <h1 className="py-7 font-bold text-4xl dark:text-white">Social App.</h1>
             <nav className="flex flex-col text-xl text-zinc-500/75">
                 <NavLink to="/" className="navlink">
                     <MdHome size={30} />

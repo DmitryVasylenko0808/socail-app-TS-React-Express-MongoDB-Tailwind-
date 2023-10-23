@@ -7,7 +7,6 @@ type PostsListProps = {
 }
 
 const PostsList = ({ posts }: PostsListProps) => {
-    console.log(posts);
     return (
         <>
             {posts?.map(post => <Post {...post} key={post._id} />)}

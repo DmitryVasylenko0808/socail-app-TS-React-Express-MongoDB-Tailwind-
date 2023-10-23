@@ -6,9 +6,10 @@ class BlackListController {
             const user = await UserModel.findById(req.userId)
                 .populate("black_list.user", "login name avatar_file");
 
-            const { black_list } = user._doc;
+            let { black_list } = user._doc;
+            black_list = black_list.map(item => item.user);
 
-            res.json({ blackList: black_list });
+            res.json(black_list);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -26,7 +27,7 @@ class BlackListController {
                 }
             )
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });
@@ -46,7 +47,7 @@ class BlackListController {
                 }
             );
 
-            res.json({ success: true });
+            res.json(true);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

@@ -44,11 +44,7 @@ class PostsController {
             const posts = await PostModel.find(
                 { user: req.params.userId } 
             ).populate("user", "login name avatar_file");
-
-            if (posts.length === 0) {
-                return res.status(404).json({ success: false, message: "Posts are not found" });
-            }
-
+            
             res.json(posts);
         } catch (err) {
             console.log(err);

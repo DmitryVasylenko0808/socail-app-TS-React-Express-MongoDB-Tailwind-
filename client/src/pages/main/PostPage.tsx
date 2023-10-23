@@ -1,22 +1,26 @@
 import React from 'react';
 import { useAuth } from '../..';
-import { useParams } from 'react-router';
+import { Navigate, useParams } from 'react-router';
 import { useGetOnePostByIdQuery } from '../../redux/services/postsApi';
+import { useGetAllCommentsByPostIdQuery } from '../../redux/services/commentsApi';
 import Post from '../../components/Post/Post';
 import CommentForm from '../../components/Forms/CommentForm';
 import CommentsBlock from '../../components/CommentsBlock';
-import { useGetAllCommentsByPostIdQuery } from '../../redux/services/commentsApi';
 import CommentsList from '../../components/Lists/CommentsList';
 
 const PostPage = () => {
   const isAuthorized = useAuth();
   const { userId, postId } = useParams();
 
-  const { data: post, isLoading: isPostLoading, isSuccess: isPostSuccess } = useGetOnePostByIdQuery({ userId, postId });
-  const { data: comments, isLoading: isCommentsLoading, isSuccess: isCommentsSuccess } = useGetAllCommentsByPostIdQuery(postId);
+  const { data: post, isLoading: isPostLoading, isSuccess: isPostSuccess, error: postError } = useGetOnePostByIdQuery({ userId, postId });
+  const { data: comments, isLoading: isCommentsLoading, isSuccess: isCommentsSuccess } = useGetAllCommentsByPostIdQuery(postId, { skip: !!postError });
 
   if (isPostLoading) {
     return <div>Loading...</div>
+  }
+
+  if (postError && "status" in postError && postError.status === 404) {
+    return <Navigate to="*" />;
   }
 
   return (

@@ -25,7 +25,7 @@ type RegisterRequest = {
 
 export const authApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getAuthorizedUser: builder.query<{ id: string, login: string }, null | undefined>({
+        getAuthorizedUser: builder.query<{ id: string, login: string, isPrivate: boolean }, null | undefined>({
             query: () => "/auth/me"
         }),
         signInUser: builder.mutation<AuthResponse, LoginRequest>({

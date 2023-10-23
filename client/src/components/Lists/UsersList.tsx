@@ -10,8 +10,8 @@ type UserItemType = {
 
 type UsersListProps = {
     list: UserItemType[] | undefined,
-    isOwn: boolean,
-    type: "followers" | "followings",
+    isOwn?: boolean,
+    type: "followers" | "followings" | "blacklist",
     removeItem: (id: string) => Promise<void>
 }
 
@@ -22,7 +22,8 @@ const UsersList = ({ list, isOwn, type, removeItem }: UsersListProps) => {
                 <UserItem 
                     {...f} 
                     isOwnFollower={isOwn && type === "followers"} 
-                    isOwnFollowing={isOwn && type === "followings"} 
+                    isOwnFollowing={isOwn && type === "followings"}
+                    isBlackList={type === "blacklist"} 
                     remove={removeItem}
                 />
             )}

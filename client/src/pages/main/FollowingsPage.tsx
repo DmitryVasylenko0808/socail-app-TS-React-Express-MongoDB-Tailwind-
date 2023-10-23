@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGetFollowingsQuery, useUnfollowUserMutation } from '../../redux/services/profilesApi';
-import { useParams } from 'react-router';
+import { Navigate, useParams } from 'react-router';
 import { useAppSelector } from '../../redux/hooks';
 import UsersList from '../../components/Lists/UsersList';
 
@@ -8,8 +8,15 @@ const FollowingsPage = () => {
   const { login } = useParams();
   const user = useAppSelector(state => state.auth);
 
-  const { data: followings, isLoading, isFetching, isSuccess, isError } = useGetFollowingsQuery(login);
+  const { data: followings, isLoading, isFetching, isSuccess, isError, error } = useGetFollowingsQuery(login);
   const [unFollowUser, { isSuccess: isUnfollowSuccess }] = useUnfollowUserMutation();
+
+  const removeUserHandle = async (id: string) => {
+    await unFollowUser(id).unwrap()
+    .catch(err => { 
+      alert(err.data.message) 
+    });
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -19,13 +26,10 @@ const FollowingsPage = () => {
     return <div>This user doesn't follow anybody</div>
   }
 
-  const removeUserHandle = async (id: string) => {
-    await unFollowUser(id).unwrap()
-      .catch(err => { 
-          alert(err.data.message) 
-      });
+  if (error && "status" in error && error.status === 404) {
+    return <Navigate to="*" />;
   }
-
+  
   return (
     <UsersList
       list={followings}

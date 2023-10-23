@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { useGetAuthorizedUserQuery } from "./redux/services/authApi";
 import { setUserInfo } from './redux/authSlice';
 import { useAuth } from '.';
+import NotFoundPage from './pages/main/NotFoundPage';
 
 const App = () => {
   const isAuthorized = useAuth();
@@ -41,7 +42,7 @@ const App = () => {
 
   return (
     <div className="min-h-screen h-max dark:bg-slate-950">
-      <div className="container mx-auto h-full">
+      <div className="container mx-auto h-full min-h-screen">
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<FeedPage />} />
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="signin" element={<LoginPage />} />
             <Route path="signup" element={<RegisterPage />} />
           </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </div>

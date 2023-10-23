@@ -9,7 +9,7 @@ const handleValidationErrors = require("../utils/handleValidationErrors");
 const router = express.Router();
 
 router.get("/limit/:limit/skip/:skip", PostsController.getAll);
-router.get("/user/:userId", PostsController.getAllByUserId);
+router.get("/user/:userId", isPrivateUser, PostsController.getAllByUserId);
 router.get("/user/:userId/post/:postId", isInBlackList, isPrivateUser, PostsController.getOneById);
 router.get("/saved", isAuthorized, PostsController.getSaved);
 router.post("/", isAuthorized, createPostValidation, handleValidationErrors, PostsController.create);

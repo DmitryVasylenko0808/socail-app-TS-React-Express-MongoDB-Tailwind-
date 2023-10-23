@@ -7,11 +7,12 @@ type UserItemProps = {
     login: string,
     avatar_file?: string,
     isOwnFollower?: boolean,
-    isOwnFollowing?: boolean
+    isOwnFollowing?: boolean,
+    isBlackList?: boolean
     remove: (id: string) => Promise<void>
 }
 
-const UserItem = ({ _id, name, login, avatar_file, isOwnFollower, isOwnFollowing, remove }: UserItemProps) => {
+const UserItem = ({ _id, name, login, avatar_file, isOwnFollower, isOwnFollowing, isBlackList, remove }: UserItemProps) => {
     const path = "http://localhost:5000/static/avatars";
 
     let imageSrc;
@@ -30,7 +31,7 @@ const UserItem = ({ _id, name, login, avatar_file, isOwnFollower, isOwnFollowing
                 <Link to={`/profile/${login}`} className="text-xl font-bold dark:text-white">{name}</Link>
                 <Link to={`/profile/${login}`} className="text-zinc-500">{`@${login}`}</Link>
             </div>
-            {isOwnFollower && 
+            {(isOwnFollower || isBlackList) && 
                 <button 
                     onClick={() => remove(_id)}
                     className="w-[150px] h-[48px] bg-zinc-200 rounded-full font-bold hover:bg-zinc-300 

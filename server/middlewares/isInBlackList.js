@@ -4,9 +4,7 @@ const UserModel = require("../models/User");
 
 const isInBlackList = async (req, res, next) => {
     if (req.headers && req.headers.authorization) {
-        console.log(true);
         const token = req.headers.authorization.split(" ")[1];
-        console.log(token, typeof token);
 
         if (token && token !== "null") {
             try {
@@ -14,7 +12,7 @@ const isInBlackList = async (req, res, next) => {
 
                 const user = await UserModel.findOne(
                     {  
-                        login: req.params.login,
+                        $or: [{login: req.params.login}, {_id: req.params.userId}],
                         black_list: {
                             $elemMatch: { user: decoded.userId }
                         }
@@ -22,7 +20,7 @@ const isInBlackList = async (req, res, next) => {
                 ); 
 
                 if (user) {
-                    return res.status(403).json({ message: "Access denied" });
+                    return res.status(404).json({ message: "Access denied" });
                 } else {
                     next();
                 }

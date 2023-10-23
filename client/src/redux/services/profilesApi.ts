@@ -85,6 +85,14 @@ export const profilesApi = emptySplitApi.injectEndpoints({
                 }
             },
             invalidatesTags: (result, error, arg) => [{ type: "User", id: arg.userId }, "Post"] 
+        }),
+        togglePrivateUser: builder.mutation<boolean, { isPrivate: boolean }>({
+            query: (body) => ({
+                url: "profiles/toggle_private",
+                method: "PATCH",
+                body
+            }),
+            invalidatesTags: ["User"]
         })
     })
 });
@@ -96,5 +104,6 @@ export const {
     useFollowUserMutation,
     useUnfollowUserMutation,
     useRemoveFollowerUserMutation,
-    useEditProfileMutation
+    useEditProfileMutation,
+    useTogglePrivateUserMutation
 } = profilesApi;

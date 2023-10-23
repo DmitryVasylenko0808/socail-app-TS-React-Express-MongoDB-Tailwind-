@@ -63,7 +63,9 @@ class AuthController {
 
     static async getMe(req, res) {
         try {
-            res.json({ id: req.userId, login: req.userLogin });
+            const user = await UserModel.findOne({ login: req.userLogin });
+
+            res.json({ id: req.userId, login: req.userLogin, isPrivate: user.is_private });
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server error" });

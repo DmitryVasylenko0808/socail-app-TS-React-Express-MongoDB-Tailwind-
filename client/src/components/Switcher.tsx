@@ -6,7 +6,7 @@ type SwitcherProps = {
         first: string | React.ReactNode;
         last: string | React.ReactNode;
     }
-    onChange: () => void;
+    onChange: (e: boolean) => void;
 }
 
 const Switcher = ({ checked, labels, onChange }: SwitcherProps) => {
@@ -17,7 +17,7 @@ const Switcher = ({ checked, labels, onChange }: SwitcherProps) => {
                 <input
                     className="w-0 h-0 opacity-0 peer"
                     type="checkbox"
-                    onChange={onChange}
+                    onChange={(e) => onChange(e.target.checked)}
                     checked={checked}
                     aria-label="theme"
                 />
