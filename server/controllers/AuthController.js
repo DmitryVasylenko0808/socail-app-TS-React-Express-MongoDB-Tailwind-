@@ -61,6 +61,26 @@ class AuthController {
         }
     }
 
+    static async passwordConfirm(req, res) {
+        try {
+            const user = await UserModel.findById(req.userId);
+            if (!user) {
+                return res.status(404).json({ path: "user", message: "User is not found" });
+            }
+
+            const isValidPass = await bcrypt.compare(req.body.password, user.password_hash);
+
+            if (!isValidPass) {
+                return res.status(400).json({ path: "password", message: "Invalid password" });
+            }
+
+            res.json(true);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Server error" });
+        }
+    }
+
     static async getMe(req, res) {
         try {
             const user = await UserModel.findOne({ login: req.userLogin });

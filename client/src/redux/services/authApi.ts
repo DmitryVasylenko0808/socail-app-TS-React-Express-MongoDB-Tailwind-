@@ -42,6 +42,13 @@ export const authApi = emptySplitApi.injectEndpoints({
                 body,
                 formData: true
             })
+        }),
+        passwordConfirm: builder.mutation<boolean, { password: string }>({
+            query: (body) => ({
+                url: "/auth/password_confirm",
+                method: "POST",
+                body
+            })
         })
     })
 });
@@ -49,5 +56,6 @@ export const authApi = emptySplitApi.injectEndpoints({
 export const { 
     useGetAuthorizedUserQuery, 
     useSignInUserMutation, 
-    useSignUpUserMutation 
+    useSignUpUserMutation,
+    usePasswordConfirmMutation 
 } = authApi;

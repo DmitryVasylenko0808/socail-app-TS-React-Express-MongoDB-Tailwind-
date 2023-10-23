@@ -93,6 +93,12 @@ export const profilesApi = emptySplitApi.injectEndpoints({
                 body
             }),
             invalidatesTags: ["User"]
+        }),
+        deleteAccountUser: builder.mutation<boolean, null | undefined>({
+            query: () => ({
+                url: "profiles/delete",
+                method: "DELETE"
+            })
         })
     })
 });
@@ -105,5 +111,6 @@ export const {
     useUnfollowUserMutation,
     useRemoveFollowerUserMutation,
     useEditProfileMutation,
-    useTogglePrivateUserMutation
+    useTogglePrivateUserMutation,
+    useDeleteAccountUserMutation
 } = profilesApi;

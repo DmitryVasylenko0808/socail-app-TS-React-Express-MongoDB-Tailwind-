@@ -9,5 +9,6 @@ const router = express.Router();
 router.get("/me", isAuthorized, AuthController.getMe);
 router.post("/signup", signUpValidation, handleValidationErrors, AuthController.signUp);
 router.post("/signin", signInValidation, handleValidationErrors, AuthController.signIn);
+router.post("/password_confirm", isAuthorized, AuthController.passwordConfirm);
 
 module.exports = router;

@@ -1,3 +1,5 @@
+const CommentModel = require("../models/Comment");
+const PostModel = require("../models/Post");
 const UserModel = require("../models/User");
 const moveFile = require("../utils/moveFile");
 
@@ -85,7 +87,27 @@ class ProfilesController {
 
     static async delete(req, res) {
         try {
+            await CommentModel.deleteMany({ user: req.userId });
+            await PostModel.deleteMany({ user: req.userId });
             await UserModel.deleteOne({ _id: req.userId });
+            await UserModel.updateMany(
+                {
+                    $or: [
+                        { followers: { $elemMatch: { user: req.userId } } },
+                        { followings: { $elemMatch: { user: req.userId } } },
+                        { black_list: { $elemMatch: { user: req.userId } } }
+                    ]
+                },
+                {
+                    $pull: {
+                        followers: { user: req.userId },
+                        followings: { user: req.userId },
+                        black_list: { user: req.userId }
+                    }
+                }
+            );
+
+            //
 
             res.json(true);
         } catch (err) {
