@@ -146,6 +146,67 @@ class ProfilesController {
         }
     }
 
+    static async search(req, res) {
+        try {
+            const regex = new RegExp(`.*${req.params.name}.*`);
+
+            let users = await UserModel.find({
+                $or: [
+                    { login: { $regex: regex, $options: "i" }},
+                    { name: { $regex: regex, $options: "i" }}
+                ]
+            }, "login name avatar_file black_list");
+
+            users = users
+                .filter(user => !user.black_list.includes({ user: req.userId }))
+                .map(user => {
+                    const { black_list, ...other } = user._doc;
+                    return { ...other };
+                });
+
+            res.json(users);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Server errro" });
+        }
+    }
+
+    static async getRecommends(req, res) {
+        try {
+            const maxUsers = 4;
+
+            const user = await UserModel.findById(req.userId, "login name avatar_file")
+                .populate("followers.user", "login name avatar_file followers");
+
+            const recommends = user.followers
+                .filter(follower => !follower.user.followers.find(item => item.user.toString() === req.userId))
+                .map(item => {
+                    const { followers, ...other } = item.user._doc;
+                    return { ...other };
+                });
+
+            if (recommends.length < maxUsers) {
+                const firstUsers = await UserModel
+                    .find(
+                        { $and: [
+                            { "black_list.user": { $ne: req.userId } },
+                            { "followers.user": { $ne: req.userId } },
+                            { _id: { $ne: req.userId } }
+                        ]},
+                        "login name avatar_file"
+                    )
+                    .limit(maxUsers - recommends.length);
+
+                recommends.push(...firstUsers);
+            }
+            
+            res.json(recommends);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Server errro" });
+        }
+    }
+
     static async follow(req, res) {
         try {
             await UserModel.updateOne(

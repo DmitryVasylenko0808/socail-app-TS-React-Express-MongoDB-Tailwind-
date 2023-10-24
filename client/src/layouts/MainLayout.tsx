@@ -1,14 +1,16 @@
 import React from 'react';
+import NavBar from '../components/NavBar';
 import SideBar from '../components/SideBar';
 import { Outlet } from 'react-router';
 
 const MainLayout = () => {
   return (
     <main className="relative w-full h-full">
-      <SideBar />
-      <section className="p-10 ml-[270px]">
+      <NavBar />
+      <section className="p-10 ml-[270px] w-[790px]">
         <Outlet />
       </section>
+      <SideBar />
     </main>
   );
 }
