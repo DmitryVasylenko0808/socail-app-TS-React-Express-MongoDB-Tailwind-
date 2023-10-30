@@ -29,11 +29,7 @@ const PostForm = () => {
             image: target.image.files[0]
         };
 
-        const formData = new FormData();
-        formData.append("text", data.text);
-        formData.append("image", data.image);
-
-        await createPost(formData)
+        await createPost(data)
             .unwrap()
             .then(() => { setError(null) })
             .catch(err => { setError({ ...err.data }) });

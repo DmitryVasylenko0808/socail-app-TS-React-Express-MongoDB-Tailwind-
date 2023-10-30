@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import MainLayout from './layouts/MainLayout';
+import AuthLayout from './layouts/AuthLayout';
 import FeedPage from './pages/main/FeedPage';
 import SavedPostsPage from './pages/main/SavedPostsPage';
 import ProfilePage from './pages/main/ProfilePage';
@@ -9,15 +10,14 @@ import PostPage from './pages/main/PostPage';
 import BlackListPage from './pages/main/BlackListPage';
 import FollowersPage from './pages/main/FollowersPage';
 import FollowingsPage from './pages/main/FollowingsPage';
-import AuthLayout from './layouts/AuthLayout';
-import LoginPage from './pages/auth/LoginPage';
+import NotFoundPage from './pages/main/NotFoundPage';
 import RegisterPage from './pages/auth/RegisterPage';
+import LoginPage from './pages/auth/LoginPage';
 import RequireAuth from './pages/RequireAuth';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { useGetAuthorizedUserQuery } from "./redux/services/authApi";
 import { setUserInfo } from './redux/authSlice';
 import { useAuth } from '.';
-import NotFoundPage from './pages/main/NotFoundPage';
 
 const App = () => {
   const isAuthorized = useAuth();

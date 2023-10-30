@@ -17,10 +17,11 @@ import PostMenu from "./PostMenu";
 import Modal from "../Modal";
 import EditPostForm from "../Forms/EditPostForm";
 import { Post as PostType } from "../../types";
+import { formatDate } from "../../utils/formatDate";
 
 type PostProps = PostType;
 
-const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, createdAt, updatedAt }: PostProps) => {
+const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, createdAt }: PostProps) => {
     const path = "http://localhost:5000/static/avatars";
     const pathPosts = "http://localhost:5000/static/posts";
 
@@ -31,8 +32,7 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
         imageFile = `${path}/${user.avatar_file}`;
     }
 
-    let date: string | string[] = createdAt.split(/-|:|T/);
-    date = `${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`;
+    let date = formatDate(createdAt);
 
     const [isOpedEditPostForm, setIsOpenEditFormPost] = useState<boolean>(false);
     const authUser = useAppSelector(state => state.auth);
@@ -89,10 +89,7 @@ const Post = ({ _id, user, text, image, comments_count, likes_list, saves_list, 
                 </div>
 
                 <div className="break-all">
-                    <p className="mb-4 text-zinc-500">
-                        {text} <Link to={`/post/${user._id}/${_id}`} className="text-stripe-300 underline hover:text-stripe-500">Read more</Link>
-                    </p>
-
+                    <p className="mb-4 text-zinc-500">{text}</p>
                     {image &&
                         <div className="w-full flex justify-center">
                             <img src={`${pathPosts}/${image}`} alt={image} className="max-h-[420px] rounded-lg" />

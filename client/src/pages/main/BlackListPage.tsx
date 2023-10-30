@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGetBlackListQuery, useRemoveFromBlackListMutation } from '../../redux/services/blackListApi';
 import UsersList from '../../components/Lists/UsersList';
+import Loader from '../../components/Loader';
 
 const BlackListPage = () => {
   const { data, isLoading, isSuccess } = useGetBlackListQuery(null);
@@ -11,7 +12,11 @@ const BlackListPage = () => {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader size="big" variant="stripe" />
+      </div>
+    )
   }
 
   if (isSuccess && data.length === 0) {

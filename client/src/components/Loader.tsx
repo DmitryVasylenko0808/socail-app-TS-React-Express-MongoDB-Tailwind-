@@ -10,7 +10,7 @@ const Loader = ({ variant, size }: LoaderProps) => {
     if (size === "normal") {
         sizeLoader = "h-[24px] w-[24px]";
     } else if (size === "big") {
-        sizeLoader = "h-[48px] w-[48px]";
+        sizeLoader = "h-[56px] w-[56px]";
     }
 
     let borderColor;

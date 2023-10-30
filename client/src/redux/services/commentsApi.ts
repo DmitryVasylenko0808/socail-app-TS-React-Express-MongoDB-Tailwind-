@@ -1,20 +1,13 @@
 import { emptySplitApi } from "./emptySplitApi";
-
-type GetCommentsResponse = Comment[];
-
-type AddCommentRequest = {
-    postId?: string,
-    text: string
-}
-
-type RemoveCommentRequest = {
-    postId?: string,
-    commentId?: string
-}
+import { 
+    GetCommentsResponse, 
+    AddCommentRequest, 
+    RemoveCommentRequest 
+} from "../services.types";
 
 export const commentsApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getAllCommentsByPostId: builder.query<any, string | undefined>({
+        getAllCommentsByPostId: builder.query<GetCommentsResponse, string | undefined>({
             query: (postId) => `comments/${postId}`,
             providesTags: ["Comment"]
         }),

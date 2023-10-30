@@ -8,7 +8,7 @@ type ModalProps = {
 
 const Modal = ({ onClose, children }: ModalProps) => {
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-[#0000007A] flex justify-center items-center">
+        <div className="fixed top-0 left-0 w-full h-full bg-[#0000007A] flex justify-center items-center z-10">
             <div className="px-10 pt-5 pb-8 w-[600px] bg-white border rounded-2xl shadow-2xl dark:bg-slate-900 dark:border-none">
                 <div className="flex justify-end">
                     <button
@@ -19,7 +19,6 @@ const Modal = ({ onClose, children }: ModalProps) => {
                         <MdOutlineClose size={36} />
                     </button>
                 </div>
-
                 {children}
             </div>
         </div>

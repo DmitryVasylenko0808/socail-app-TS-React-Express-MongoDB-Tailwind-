@@ -7,10 +7,6 @@ class CommentsController {
             const comments = await CommentModel.find({ post: req.params.postId })
                 .populate("user", "login name avatar_file");
 
-            // if (comments.length === 0) {
-            //     return res.status(404).json({ success: false, message: "Comments are not found" });
-            // }
-
             res.json(comments);
         } catch (err) {
             console.log(err);

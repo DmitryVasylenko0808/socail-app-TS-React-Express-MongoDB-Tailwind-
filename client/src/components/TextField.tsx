@@ -8,10 +8,11 @@ type TextFieldProps = {
     value?: string,
     placeholder?: string,
     isInvalid?: boolean,
-    error?: string
+    error?: string,
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
-const TextField = ({ id, isInvalid, type, variant, value, placeholder, children, error }: TextFieldProps) => {
+const TextField = ({ id, isInvalid, type, variant, value, placeholder, children, error, onChange }: TextFieldProps) => {
     const invalidInput = error || isInvalid ? "border-red-500" : "";
     const errorHelperHidden = !error ? "hidden" : "";
 
@@ -24,7 +25,9 @@ const TextField = ({ id, isInvalid, type, variant, value, placeholder, children,
                     className={`py-1 border-b-4 dark:border-b-slate-700 text-xl bg-transparent focus:outline-none focus:border-stripe-400 
                     dark:focus:border-b-stripe-400 caret-stripe-400 ${invalidInput}`} 
                     id={id}
+                    placeholder={placeholder}
                     defaultValue={value}
+                    onChange={onChange}
                   />
                 : <textarea
                     className={`w-full min-h-[100px] resize-none  bg-transparent
@@ -33,6 +36,7 @@ const TextField = ({ id, isInvalid, type, variant, value, placeholder, children,
                     id={id}
                     placeholder={placeholder}
                     defaultValue={value}
+                    onChange={onChange}
                   />
             }
             <span className={`${errorHelperHidden} text-sm text-red-500`}>{error}</span>

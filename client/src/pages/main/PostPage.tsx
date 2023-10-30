@@ -7,6 +7,7 @@ import Post from '../../components/Post/Post';
 import CommentForm from '../../components/Forms/CommentForm';
 import CommentsBlock from '../../components/CommentsBlock';
 import CommentsList from '../../components/Lists/CommentsList';
+import Loader from '../../components/Loader';
 
 const PostPage = () => {
   const isAuthorized = useAuth();
@@ -16,7 +17,11 @@ const PostPage = () => {
   const { data: comments, isLoading: isCommentsLoading, isSuccess: isCommentsSuccess } = useGetAllCommentsByPostIdQuery(postId, { skip: !!postError });
 
   if (isPostLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader size="big" variant="stripe" />
+      </div>
+    )
   }
 
   if (postError && "status" in postError && postError.status === 404) {

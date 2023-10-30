@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { Comment } from "../types";
 import { MdDeleteOutline } from "react-icons/md";
 import { useRemoveCommentMutation } from "../redux/services/commentsApi";
+import { formatDate } from "../utils/formatDate";
 
 type CommentItemProps = Comment & { isAuthor: boolean };
 
 const CommentItem = ({ _id, user, post, text, createdAt, isAuthor }: CommentItemProps) => {
-    let date: string | string[] = createdAt.split(/-|:|T/);
-    date = `${date[2]}-${date[1]}-${date[0]} ${date[3]}:${date[4]}`;
+    let date = formatDate(createdAt); 
 
     const path = "http://localhost:5000/static/avatars";
     let imageFile;

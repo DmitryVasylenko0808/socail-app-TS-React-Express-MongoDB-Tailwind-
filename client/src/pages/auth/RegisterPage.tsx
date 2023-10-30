@@ -48,16 +48,9 @@ const RegisterPage = () => {
       avatar_file: target.avatar_file.files[0]
     }
 
-    const formData = new FormData();
-    formData.append("login", data.login);
-    formData.append("password", data.password);
-    formData.append("password_confirm", data.password_confirm);
-    formData.append("name", data.name);
-    formData.append("country", data.country);
-    formData.append("city", data.city);
-    formData.append("avatar_file", data.avatar_file);
+    
 
-    await signUp(formData).unwrap()
+    await signUp(data).unwrap()
       .catch(err => { setError({ ...err.data }) });
   }
 

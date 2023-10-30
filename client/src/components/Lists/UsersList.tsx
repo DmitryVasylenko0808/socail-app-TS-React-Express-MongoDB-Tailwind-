@@ -25,6 +25,7 @@ const UsersList = ({ list, isOwn, type, removeItem }: UsersListProps) => {
                     isOwnFollowing={isOwn && type === "followings"}
                     isBlackList={type === "blacklist"} 
                     remove={removeItem}
+                    key={f._id}
                 />
             )}
         </div>

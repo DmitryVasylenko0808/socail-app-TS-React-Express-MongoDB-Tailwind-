@@ -1,32 +1,12 @@
-import { url } from "inspector";
-import { User } from "../../types";
 import { emptySplitApi } from "./emptySplitApi";
-
-type Follower = {
-    _id: string,
-    login: string,
-    name: string,
-    avatar_file: string
-};
-
-type Following = {
-    _id: string,
-    login: string,
-    name: string,
-    avatar_file: string
-}
-
-type FetchFollowersResponse = Follower[];
-type FetchFollowingsResponse = Following[];
-
-type ProfilesEditRequest = {
-    userId: string,
-    name: string,
-    about: string,
-    country: string,
-    city: string,
-    avatar_file?: string
-}
+import { User } from "../../types";
+import { 
+    FetchFollowersResponse, 
+    FetchFollowingsResponse, 
+    GetRecommendsResponse, 
+    ProfilesEditRequest, 
+    SearchResponse
+} from "../services.types";
 
 export const profilesApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -45,6 +25,13 @@ export const profilesApi = emptySplitApi.injectEndpoints({
         getFollowings: builder.query<FetchFollowingsResponse, string | undefined>({
             query: (login) => `profiles/${login}/followings`,
             providesTags: ["User"]
+        }),
+        getRecommends: builder.query<GetRecommendsResponse, null>({
+            query: () => "profiles/recommends/need_to_follow",
+            providesTags: ["User", "Post"]
+        }),
+        searchUsers: builder.query<SearchResponse, string>({
+            query: (name) => `profiles/search/${name}`
         }),
         followUser: builder.mutation<boolean, { userId: string }>({
             query: (body) => ({
@@ -68,7 +55,7 @@ export const profilesApi = emptySplitApi.injectEndpoints({
             }),
             invalidatesTags: ["User"]
         }),
-        editProfile: builder.mutation<boolean, any>({
+        editProfile: builder.mutation<boolean, ProfilesEditRequest>({
             query: ({ userId, ...patch }) => {
                 const formData = new FormData();
                 formData.append("name", patch.name);
@@ -107,6 +94,8 @@ export const {
     useGetProfileQuery, 
     useGetFollowersQuery,
     useGetFollowingsQuery,
+    useGetRecommendsQuery,
+    useSearchUsersQuery,
     useFollowUserMutation,
     useUnfollowUserMutation,
     useRemoveFollowerUserMutation,

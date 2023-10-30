@@ -3,6 +3,7 @@ import { useGetFollowersQuery, useRemoveFollowerUserMutation } from '../../redux
 import { Navigate, useParams } from 'react-router';
 import { useAppSelector } from '../../redux/hooks';
 import UsersList from '../../components/Lists/UsersList';
+import Loader from '../../components/Loader';
 
 const FollowersPage = () => {
   const { login } = useParams();
@@ -19,7 +20,11 @@ const FollowersPage = () => {
   } 
   
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader size="big" variant="stripe" />
+      </div>
+    )
   }
 
   if (isSuccess && followers.length === 0) {

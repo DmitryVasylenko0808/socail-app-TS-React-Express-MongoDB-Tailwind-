@@ -9,6 +9,7 @@ import PostForm from '../../components/Forms/PostForm';
 import EditProfileForm from '../../components/Forms/EditProfileForm';
 import Modal from '../../components/Modal';
 import ProfileInfoBlock from '../../components/ProfileInfoBlock';
+import Loader from '../../components/Loader';
 
 const ProfilePage = () => {
   const { login } = useParams();
@@ -16,8 +17,8 @@ const ProfilePage = () => {
   const user = useAppSelector(state => state.auth);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-  const { data: profile, isSuccess: isProfileSuccess, error: profileError } = useGetProfileQuery(login);
-  const { data: posts, isSuccess, isLoading, error} = useGetAllPostsByUserIdQuery(profile?._id, { skip: !isProfileSuccess });
+  const { data: profile, isSuccess: isProfileSuccess, isLoading: isProfileLoading, error: profileError } = useGetProfileQuery(login);
+  const { data: posts, isSuccess, isLoading: isPostsLoading, error } = useGetAllPostsByUserIdQuery(profile?._id, { skip: !isProfileSuccess });
   const [followUser, { isSuccess: isFollowSuccess, isError: isFollowError }] = useFollowUserMutation();
   const [unfollowUser, { isSuccess: isUnfollowSuccess, isError: isUnfollowError }] = useUnfollowUserMutation();
   const [addToBlackList, { isSuccess: isAddToBlackListSuccess }] = useAddToBlackListMutation();
@@ -58,14 +59,16 @@ const ProfilePage = () => {
 
   const isPrivate = error && "status" in error && error.status === 403;
 
-  const content = isPrivate 
-    ? <div className="text-center text-zinc-500 text-2xl">
-        This user is private. Follow him/her to see the posts
-      </div> 
-    : <PostsList posts={posts} />
-
   if (profileError && "status" in profileError && profileError.status === 404) {
     return <Navigate to="*" />;
+  }
+
+  if (isProfileLoading || isPostsLoading) {
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader size="big" variant="stripe" />
+      </div>
+    )
   }
 
   return (
@@ -83,15 +86,19 @@ const ProfilePage = () => {
           openEditForm={openEditForm}
         />
       }
+
       {isProfileSuccess && user.login === profile.login && <PostForm />}
-      {isLoading 
-        ? <div>Loading...</div> 
-        : content
+
+      {isPrivate
+        ? <div className="text-center text-zinc-500 text-2xl">
+            This user is private. Follow him/her to see the posts
+          </div>
+        : <PostsList posts={posts} />
       }
 
       {isOpenEdit && isProfileSuccess &&
         <Modal onClose={closeEditForm}>
-          <EditProfileForm userLogin={profile?.login}/>
+          <EditProfileForm userLogin={profile?.login} />
         </Modal>}
     </div>
   );

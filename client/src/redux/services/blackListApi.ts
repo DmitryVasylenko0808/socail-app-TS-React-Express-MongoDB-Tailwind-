@@ -7,7 +7,7 @@ export const blackListApi = emptySplitApi.injectEndpoints({
             query: (body) => "blacklist/",
             providesTags: ["User", "Post", "Comment"]
         }),
-        addToBlackList: builder.mutation<boolean, {userId: string}>({
+        addToBlackList: builder.mutation<boolean, { userId: string }>({
             query: (body) => ({
                 url: "blacklist/",
                 method: "POST",

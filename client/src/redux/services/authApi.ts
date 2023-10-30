@@ -1,49 +1,46 @@
-import { type } from "os";
-import { User } from "../../types";
+import { 
+    AuthorizedUserResponse, 
+    AuthResponse, 
+    LoginRequest, 
+    RegisterRequest, 
+    PasswordConfirmRequest 
+} from "../services.types";
 import { emptySplitApi } from "./emptySplitApi";
-
-type AuthResponse = {
-    id: string,
-    login: string, 
-    token: string
-};
-
-type LoginRequest = {
-    login: string, 
-    password: string
-}
-
-type RegisterRequest = {
-    login: string, 
-    password: string,
-    password_confirm: string,
-    name: string,
-    country: string,
-    city: string,
-    avatar_file: string
-}
 
 export const authApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getAuthorizedUser: builder.query<{ id: string, login: string, isPrivate: boolean }, null | undefined>({
-            query: () => "/auth/me"
+        getAuthorizedUser: builder.query<AuthorizedUserResponse, null | undefined>({
+            query: () => "/auth/me",
+            providesTags: ["User"]
         }),
         signInUser: builder.mutation<AuthResponse, LoginRequest>({
-            query: (body) => ({ 
+            query: (body) => ({
                 url: "/auth/signin",
                 method: "POST",
                 body
-            })
+            }),
+            invalidatesTags: ["User", "Post", "Comment"]
         }),
-        signUpUser: builder.mutation<boolean, FormData>({
-            query: (body) => ({
-                url: "/auth/signup",
-                method: "POST",
-                body,
-                formData: true
-            })
+        signUpUser: builder.mutation<boolean, RegisterRequest>({
+            query: (body) => {
+                const formData = new FormData();
+                formData.append("login", body.login);
+                formData.append("password", body.password);
+                formData.append("password_confirm", body.password_confirm);
+                formData.append("name", body.name);
+                formData.append("country", body.country);
+                formData.append("city", body.city);
+                formData.append("avatar_file", body.avatar_file);
+
+                return {
+                    url: "/auth/signup",
+                    method: "POST",
+                    body: formData,
+                    formData: true
+                }
+            }
         }),
-        passwordConfirm: builder.mutation<boolean, { password: string }>({
+        passwordConfirm: builder.mutation<boolean, PasswordConfirmRequest>({
             query: (body) => ({
                 url: "/auth/password_confirm",
                 method: "POST",
@@ -53,9 +50,9 @@ export const authApi = emptySplitApi.injectEndpoints({
     })
 });
 
-export const { 
-    useGetAuthorizedUserQuery, 
-    useSignInUserMutation, 
+export const {
+    useGetAuthorizedUserQuery,
+    useSignInUserMutation,
     useSignUpUserMutation,
-    usePasswordConfirmMutation 
+    usePasswordConfirmMutation
 } = authApi;

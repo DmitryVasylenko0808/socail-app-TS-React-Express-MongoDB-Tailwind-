@@ -7,7 +7,6 @@ class PostsController {
         try {
             let posts = await PostModel.find()
                 .sort({ createdAt: -1 })
-                .skip(req.params.limit * req.params.skip)
                 .limit(req.params.limit)
                 .populate("user", "login name avatar_file black_list");
 
@@ -218,6 +217,21 @@ class PostsController {
             if (!post) {
                 return res.status(404).json({ success: false, message: "Post is not found" });
             }
+
+            await UserModel.updateMany(
+                { 
+                    saved_posts: {
+                        $elemMatch: { post: req.params.postId }
+                    }
+                },
+                { 
+                    $pull: {
+                        saved_posts: {
+                            post: req.params.postId
+                        }
+                    }      
+                }
+            );
 
             res.json(true);
         } catch (err) {

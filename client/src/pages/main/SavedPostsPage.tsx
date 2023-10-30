@@ -1,12 +1,17 @@
 import React from 'react';
 import { useGetSavedPostsQuery } from '../../redux/services/postsApi';
 import PostsList from '../../components/Lists/PostsList';
+import Loader from '../../components/Loader';
 
 const SavedPostsPage = () => {
   const { data: savedPosts, isLoading, isSuccess } = useGetSavedPostsQuery(null);
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="py-12 flex justify-center">
+        <Loader size="big" variant="stripe" />
+      </div>
+    )
   }
 
   return (

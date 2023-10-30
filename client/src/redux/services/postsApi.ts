@@ -1,24 +1,23 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Post } from "../../types";
 import { emptySplitApi } from "./emptySplitApi";
-
-type RequestEditPost = {
-    postId: string,
-    text: string,
-    image_file: string
-}
+import { Post } from "../../types";
+import { 
+    GetAllPostsRequest, 
+    GetOnePostRequest, 
+    CreatePostRequest, 
+    RequestEditPost 
+} from "../services.types";
 
 export const postsApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getAllPosts: builder.query<Post[], { limit: number, skip: number }>({
-            query: ({ limit, skip }) => `posts/limit/${limit}/skip/${skip}`,
+        getAllPosts: builder.query<Post[], GetAllPostsRequest>({
+            query: ({ limit }) => `posts/limit/${limit}`,
             providesTags: ["Post"]
         }),
         getAllPostsByUserId: builder.query<Post[], string | undefined>({
             query: (id) => `posts/user/${id}`,
             providesTags: ["Post"]
         }),
-        getOnePostById: builder.query<Post, { userId: string | undefined, postId: string | undefined }>({
+        getOnePostById: builder.query<Post, GetOnePostRequest>({
             query: ({ userId, postId }) => `posts/user/${userId}/post/${postId}`,
             providesTags: ["Post"]
         }),
@@ -26,13 +25,19 @@ export const postsApi = emptySplitApi.injectEndpoints({
             query: () => "posts/saved",
             providesTags: ["Post"]
         }),
-        createPost: builder.mutation<boolean, FormData>({
-            query: (body) => ({
-                url: "posts/",
-                method: "POST",
-                body,
-                formData: true
-            }),
+        createPost: builder.mutation<boolean, CreatePostRequest>({
+            query: (body) => {
+                const formData = new FormData();
+                formData.append("text", body.text);
+                formData.append("image", body.image);
+                 
+                return {
+                    url: "posts/",
+                    method: "POST",
+                    body: formData,
+                    formData: true
+                }
+            },
             invalidatesTags: ["Post"]
         }),
         editPost: builder.mutation<boolean, RequestEditPost>({
